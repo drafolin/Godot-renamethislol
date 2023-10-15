@@ -1,0 +1,97 @@
+[gd_scene load_steps=9 format=3 uid="uid://dh0sj0kqyk5tu"]
+
+[ext_resource type="Texture2D" uid="uid://civyqhvofdqn5" path="res://Prefabs/Explosion/assets/Smoke30Frames (1).png" id="1_pjxgf"]
+[ext_resource type="Script" path="res://Prefabs/Explosion/Particles.cs" id="2_rmsat"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_aea27"]
+direction = Vector3(0, 1, 0)
+spread = 90.0
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = 20.0
+initial_velocity_max = 40.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_b5une"]
+transparency = 1
+albedo_texture = ExtResource("1_pjxgf")
+uv1_scale = Vector3(0.167, 0.2, 1)
+
+[sub_resource type="QuadMesh" id="QuadMesh_fgko5"]
+material = SubResource("StandardMaterial3D_b5une")
+
+[sub_resource type="Animation" id="Animation_0to2j"]
+resource_name = "Explosion"
+length = 0.9
+loop_mode = 1
+step = 0.03
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:draw_pass_1")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [SubResource("QuadMesh_fgko5")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:draw_pass_1:material:uv1_offset")
+tracks/1/interp = 0
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.03, 0.06, 0.09, 0.12, 0.15, 0.18, 0.21, 0.24, 0.27, 0.3, 0.33, 0.36, 0.39, 0.42, 0.45, 0.48, 0.51, 0.54, 0.57, 0.6, 0.63, 0.66, 0.69, 0.72, 0.75, 0.78, 0.81, 0.84, 0.87),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [Vector3(0, 0, 0), Vector3(0.16, 0, 0), Vector3(0.33, 0, 0), Vector3(0.5, 0, 0), Vector3(0.66, 0, 0), Vector3(0.83, 0, 0), Vector3(0, 0.2, 0), Vector3(0.16, 0.2, 0), Vector3(0.33, 0.2, 0), Vector3(0.5, 0.2, 0), Vector3(0.66, 0.2, 0), Vector3(0.83, 0.2, 0), Vector3(0, 0.4, 0), Vector3(0.16, 0.4, 0), Vector3(0.33, 0.4, 0), Vector3(0.5, 0.4, 0), Vector3(0.66, 0.4, 0), Vector3(0.83, 0.4, 0), Vector3(0, 0.6, 0), Vector3(0.16, 0.6, 0), Vector3(0.33, 0.6, 0), Vector3(0.5, 0.6, 0), Vector3(0.66, 0.6, 0), Vector3(0.83, 0.6, 0), Vector3(0, 0.8, 0), Vector3(0.16, 0.8, 0), Vector3(0.33, 0.8, 0), Vector3(0.5, 0.8, 0), Vector3(0.66, 0.8, 0), Vector3(0.83, 0.8, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_5sd8f"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:draw_pass_1:material:uv1_offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:draw_pass_1")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [SubResource("QuadMesh_fgko5")]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_v2mqm"]
+_data = {
+"Explosion": SubResource("Animation_0to2j"),
+"RESET": SubResource("Animation_5sd8f")
+}
+
+[node name="GPUParticles3D" type="GPUParticles3D"]
+emitting = false
+amount = 400
+one_shot = true
+explosiveness = 1.0
+randomness = 1.0
+process_material = SubResource("ParticleProcessMaterial_aea27")
+draw_pass_1 = SubResource("QuadMesh_fgko5")
+script = ExtResource("2_rmsat")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_v2mqm")
+}

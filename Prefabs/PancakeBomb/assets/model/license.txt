@@ -1,0 +1,11 @@
+Model Information:
+* title:	Pancake
+* source:	https://sketchfab.com/3d-models/pancake-f533087557cb47549c5e6ab5554005ce
+* author:	soidev (https://sketchfab.com/soidev)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Pancake" (https://sketchfab.com/3d-models/pancake-f533087557cb47549c5e6ab5554005ce) by soidev (https://sketchfab.com/soidev) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

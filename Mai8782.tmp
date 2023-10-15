@@ -1,0 +1,50 @@
+[gd_scene load_steps=8 format=3 uid="uid://c1fwbbtxpgl3v"]
+
+[ext_resource type="Texture2D" uid="uid://dh1jqp0gtqbjg" path="res://assets/hdris/kloofendal_48d_partly_cloudy_puresky_2k.hdr" id="1_gyip7"]
+[ext_resource type="Script" path="res://Player.gd" id="1_sdt6r"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_gqsxa"]
+panorama = ExtResource("1_gyip7")
+
+[sub_resource type="Sky" id="Sky_1yrdp"]
+sky_material = SubResource("PanoramaSkyMaterial_gqsxa")
+
+[sub_resource type="Environment" id="Environment_kann8"]
+background_mode = 2
+sky = SubResource("Sky_1yrdp")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vanmn"]
+albedo_color = Color(0.572549, 0.211765, 0.752941, 1)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_u2yoo"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="env" type="Node3D" parent="."]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="env"]
+environment = SubResource("Environment_kann8")
+
+[node name="world" type="Node3D" parent="."]
+
+[node name="floor" type="CSGBox3D" parent="world"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+use_collision = true
+size = Vector3(100, 0.2, 100)
+
+[node name="boite" type="CSGBox3D" parent="world"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -3.99249)
+material = SubResource("StandardMaterial3D_vanmn")
+
+[node name="CharacterBody3D" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.346765, 0)
+script = ExtResource("1_sdt6r")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.724809, 0)
+shape = SubResource("CapsuleShape3D_u2yoo")
+
+[node name="Pivot" type="Node3D" parent="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.724809, 0)
+
+[node name="Camera3D" type="Camera3D" parent="CharacterBody3D/Pivot"]

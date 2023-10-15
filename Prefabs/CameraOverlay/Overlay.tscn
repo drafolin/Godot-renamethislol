@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://csswmcwuo7qlt"]
+
+[node name="Overlay" type="Node3D"]
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="."]
+transform = Transform3D(0.94454, -0.211592, -0.251144, 0.312827, 0.347049, 0.884136, -0.099917, -0.913667, 0.393993, 0.215721, -0.225001, -0.0564355)
+layers = 524288
+radius = 0.0458793
+height = 0.539536
+
+[node name="Camera3D" type="Camera3D" parent="."]
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.19317, 0.242667, -0.556842)

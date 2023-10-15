@@ -1,0 +1,178 @@
+using System;
+using Godot;
+using Main = Test12.Scripts.UI.Menu.Main;
+using Pancake = Test12.Prefabs.PancakeBomb.Pancake;
+
+namespace Test12.Prefabs.Player;
+
+public partial class Player : CharacterBody3D
+{
+    // Get the gravity from the project settings to be synced with RigidBody nodes.
+    [Export] private float _gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").As<float>();
+    [Export] private Node3D _pivot;
+    [Export] private Main _menu;
+    [Export] private Camera3D _camera;
+    [Export] private double _speed = 5.0f;
+    [Export] private double _jumpVelocity = 4.5f;
+    [Export] private double _airbornePenalty = 4.5f;
+    [Export] private Node3D _throwingEnv;
+    [Export] private PackedScene _pancake;
+    [Export] private double _gunDamage = 1;
+    private RayCast3D _floorDetector;
+
+    private float _rotationX;
+    private float _rotationY;
+
+
+    private GpuParticles3D _bullet;
+
+    public override void _Ready()
+    {
+        Input.MouseMode = Input.MouseModeEnum.Captured;
+        _floorDetector = GetNode<RayCast3D>("RayCast3D");
+        _bullet = GetNode<GpuParticles3D>("Pivot/GPUParticles3D");
+    }
+
+    public override void _Input(InputEvent @event)
+    {
+        base._Input(@event);
+        switch (@event)
+        {
+            // modify accumulated mouse rotation
+            case InputEventMouseMotion mouseMotion when Input.MouseMode != Input.MouseModeEnum.Visible:
+            {
+                _rotationX += mouseMotion.Relative.X / 360;
+                _rotationY += mouseMotion.Relative.Y / -360;
+                _rotationY = (float)Math.Clamp(_rotationY, -Math.Tau / 4, Math.Tau / 4);
+                
+                // reset rotation
+                Transform = Transform with
+                {
+                    Basis = Basis.Identity with
+                    {
+                        Z = new Vector3((float)-Math.Sin(_rotationX), 0, (float)Math.Cos(_rotationX)),
+                        Y = new Vector3(0, 1, 0),
+                        X = new Vector3((float)Math.Cos(_rotationX), 0, (float)Math.Sin(_rotationX)),
+                    }
+                };
+
+                _pivot.Transform = _pivot.Transform with
+                {
+                    Basis = Basis.Identity with
+                    {
+                        X = new Vector3(1, 0, 0),
+                        Y = new Vector3(0, (float)Math.Cos(_rotationY), (float)Math.Sin(_rotationY)),
+                        Z = new Vector3(0, (float)-Math.Sin(_rotationY), (float)Math.Cos(_rotationY))
+                    }
+                };
+                
+                break;
+            }
+            case InputEventKey eventKey when eventKey.IsActionPressed("bomb"):
+                var newBomb = _pancake.Instantiate<Pancake>();
+                newBomb.LinearVelocity = _pivot.GlobalTransform.Basis.Z * -12;
+                newBomb.Transform = newBomb.Transform with
+                {
+                    Origin = _pivot.GlobalTransform.Origin
+                };
+                newBomb.Set("_player", this);
+                _throwingEnv.AddChild(newBomb);
+                break;
+            case InputEventKey eventKey when eventKey.IsActionPressed("ui_cancel"):
+                if(_menu.Get("visible").AsBool())
+                    _menu.Close();
+                else
+                    _menu.Open();
+                return;
+            case InputEventMouseButton when Input.MouseMode == Input.MouseModeEnum.Visible:
+                return;
+            case InputEventMouseButton eventMb when eventMb.IsActionPressed("shoot") :
+                Shoot();
+                break;
+            case InputEventMouseButton eventMb when eventMb.IsActionPressed("aim"):
+                Aim();
+                break;
+            case InputEventMouseButton eventMb when eventMb.IsActionReleased("aim"):
+                Aim(false);
+                break;
+        }
+    }
+
+
+    public override void _PhysicsProcess(double delta)
+    {
+        if (Input.MouseMode == Input.MouseModeEnum.Visible)
+        {
+            return;
+        }
+
+        // Add the gravity.
+        if (!IsOnFloor())
+        {
+            Velocity = Velocity with { Y = Velocity.Y - _gravity * (float)delta };
+        }
+
+        // Handle Jump.
+        if (Input.IsActionJustPressed("jump") && IsOnFloor())
+            Velocity = Velocity with { Y = (float)_jumpVelocity };
+
+        
+        var inputDir = Input.GetVector("Strf L", "Strf R", "fwd", "bwd");
+        var isSprinting = Input.IsActionPressed("sprint");
+        var direction = (Transform.Basis * new Vector3(inputDir.X, 0, inputDir.Y)).Normalized();
+
+        var floor = _floorDetector.GetCollider();
+        double floorFriction = 10;
+        if (floor is not null) 
+            floorFriction = floor.GetMeta("frictionFactor").AsDouble();
+
+        var movementDelta = delta * _speed * floorFriction;
+        if (!direction.IsZeroApprox())
+        {
+            var speed = (float)(isSprinting ? _speed * 2 : _speed);
+
+            Velocity = Velocity with
+            {
+                X = Mathf.MoveToward(Velocity.X, direction.X * speed, (float)(IsOnFloor() ? movementDelta : movementDelta /_airbornePenalty)),
+                Z = Mathf.MoveToward(Velocity.Z, direction.Z * speed, (float)(IsOnFloor() ? movementDelta : movementDelta / _airbornePenalty))
+            };
+        }
+        else
+        {
+            Velocity = Velocity with
+            {
+                X = Mathf.MoveToward(Velocity.X, 0, (float)(IsOnFloor() ? movementDelta : 0)),
+                Z = Mathf.MoveToward(Velocity.Z, 0,  (float)(IsOnFloor() ? movementDelta : 0))
+            };
+        }
+
+
+        MoveAndSlide();
+    }
+
+    private void Shoot()
+    {
+        _bullet.Restart();
+        var spaceState = GetWorld3D().DirectSpaceState;
+
+        var from = _camera.ProjectRayOrigin(_camera.GetViewport().GetVisibleRect().GetCenter());
+        var to = from + _camera.ProjectRayNormal(_camera.GetViewport().GetVisibleRect().GetCenter()) * 400;
+
+        var result = spaceState.IntersectRay(PhysicsRayQueryParameters3D.Create(from, to));
+
+        if (result.Count <= 0) return;
+        
+        var target = result["collider"].AsGodotObject();
+        
+        if (target is not Ennemy.Ennemy ennemy) return;
+        ennemy.Damage((float)_gunDamage);
+    }
+
+    private void Aim(bool zIn = true)
+    {
+        if (zIn)
+            _camera.Fov /= 2;
+        else
+            _camera.Fov *= 2;
+    }
+}

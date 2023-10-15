@@ -1,0 +1,35 @@
+[gd_scene load_steps=6 format=3 uid="uid://c7vba3srkgg85"]
+
+[ext_resource type="Script" path="res://Prefabs/PancakeBomb/Pancake.cs" id="1_dxop3"]
+[ext_resource type="PackedScene" uid="uid://dh0sj0kqyk5tu" path="res://Prefabs/Explosion/Explosion.tscn" id="2_o0ceu"]
+[ext_resource type="PackedScene" uid="uid://86g8aeleghbn" path="res://Prefabs/PancakeBomb/assets/model/scene.gltf" id="3_nl7lf"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_c8f8p"]
+size = Vector3(1.18948, 0.621223, 1.34394)
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_y8mej"]
+height = 4.0
+radius = 10.0
+
+[node name="bomb" type="RigidBody3D" node_paths=PackedStringArray("_obstacle", "_explosionParticles", "_killCast", "_collider")]
+script = ExtResource("1_dxop3")
+_obstacle = NodePath("NavigationObstacle3D")
+_explosionParticles = NodePath("GPUParticles3D")
+_killCast = NodePath("killArea")
+_collider = NodePath("CollisionShape3D")
+
+[node name="GPUParticles3D" parent="." instance=ExtResource("2_o0ceu")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0518859, -0.0331396, 0)
+shape = SubResource("BoxShape3D_c8f8p")
+
+[node name="scene" parent="CollisionShape3D" instance=ExtResource("3_nl7lf")]
+transform = Transform3D(0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01, -0.00838135, -0.302656, -0.00687838)
+
+[node name="killArea" type="ShapeCast3D" parent="."]
+shape = SubResource("CylinderShape3D_y8mej")
+
+[node name="NavigationObstacle3D" type="NavigationObstacle3D" parent="."]
+radius = 10.0
+height = 2.0

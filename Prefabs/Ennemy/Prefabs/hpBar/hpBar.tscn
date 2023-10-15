@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3 uid="uid://cnnglmul2nv2n"]
+
+[ext_resource type="Texture2D" uid="uid://bl4ti750vpcbd" path="res://Prefabs/Ennemy/assets/heart.png" id="1_lnhak"]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+position = Vector2(25, 0)
+texture = ExtResource("1_lnhak")
+centered = false
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(450, 0)
+texture = ExtResource("1_lnhak")
+centered = false

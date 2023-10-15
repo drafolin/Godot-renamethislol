@@ -1,0 +1,201 @@
+[gd_scene load_steps=16 format=3 uid="uid://c1fwbbtxpgl3v"]
+
+[ext_resource type="Texture2D" uid="uid://dh1jqp0gtqbjg" path="res://assets/hdris/kloofendal_48d_partly_cloudy_puresky_2k.hdr" id="1_gyip7"]
+[ext_resource type="Script" path="res://Scripts/Misc/Throwables.cs" id="4_37rq8"]
+[ext_resource type="Script" path="res://Scripts/UI/Menu/Main.cs" id="4_i7nxl"]
+[ext_resource type="PackedScene" uid="uid://dampcyombgepl" path="res://Prefabs/Player/Player.tscn" id="5_qxv26"]
+[ext_resource type="Script" path="res://Scripts/UI/Menu/Resume.cs" id="5_vrmjn"]
+[ext_resource type="Texture2D" uid="uid://c66sv2tdddpt8" path="res://assets/textures/crosshair.png" id="6_gu0s3"]
+[ext_resource type="PackedScene" uid="uid://csswmcwuo7qlt" path="res://Prefabs/CameraOverlay/Overlay.tscn" id="8_8pvrx"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_gqsxa"]
+panorama = ExtResource("1_gyip7")
+
+[sub_resource type="Sky" id="Sky_1yrdp"]
+sky_material = SubResource("PanoramaSkyMaterial_gqsxa")
+
+[sub_resource type="Environment" id="Environment_kann8"]
+background_mode = 2
+sky = SubResource("Sky_1yrdp")
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_k5x6j"]
+vertices = PackedVector3Array(-43.5, 0.441023, -49.5, -49.5, 0.441023, -49.5, -49.5, 0.441023, -38, -37.25, 0.441023, -49.5, -43.5, 0.441023, -49.5, -49.5, 0.441023, -38, -31, 0.441023, -49.5, -37.25, 0.441023, -49.5, -49.5, 0.441023, -38, -24.75, 0.441023, -49.5, -31, 0.441023, -49.5, -49.5, 0.441023, -38, -18.5, 0.441023, -49.5, -24.75, 0.441023, -49.5, -49.5, 0.441023, -38, -18.5, 0.441023, -49.5, -49.5, 0.441023, -38, -49.5, 0.441023, -26.25, -12.25, 0.441023, -49.5, -1, 0.441023, -4.5, -6, 0.441023, -49.5, -12.25, 0.441023, -49.5, -49.5, 0.441023, -26.25, -49.5, 0.441023, -14.5, -1, 0.441023, -2.75, -1, 0.441023, -4.5, 0.25, 0.441023, -4.75, 0.25, 0.441023, -49.5, -6, 0.441023, -49.5, -49.5, 0.441023, -14.5, -49.5, 0.441023, -2.75, -1, 0.441023, -2.75, 49.5, 0.441023, -38, 49.5, 0.441023, -49.5, 43.25, 0.441023, -49.5, 49.5, 0.441023, -38, 43.25, 0.441023, -49.5, 37, 0.441023, -49.5, 49.5, 0.441023, -38, 37, 0.441023, -49.5, 30.75, 0.441023, -49.5, 49.5, 0.441023, -38, 30.75, 0.441023, -49.5, 24.75, 0.441023, -49.5, 49.5, 0.441023, -38, 24.75, 0.441023, -49.5, 18.5, 0.441023, -49.5, 49.5, 0.441023, -38, 18.5, 0.441023, -49.5, 12.5, 0.441023, -49.5, 49.5, 0.441023, -26.25, 12.5, 0.441023, -49.5, 6.25, 0.441023, -49.5, 1.25, 0.441023, -4.5, 1.25, 0.441023, -2.75, 49.5, 0.441023, -14.5, 49.5, 0.441023, -26.25, 0.25, 0.441023, -49.5, 0.25, 0.441023, -4.75, 1.25, 0.441023, -4.5, 6.25, 0.441023, -49.5, 1.25, 0.441023, -2.75, 49.5, 0.441023, -2.75, 49.5, 0.441023, -14.5, -49.5, 0.441023, 42.75, -49.5, 0.441023, 49.5, -43.5, 0.441023, 49.5, -49.5, 0.441023, 42.75, -43.5, 0.441023, 49.5, -37.25, 0.441023, 49.5, -49.5, 0.441023, 36.25, -49.5, 0.441023, 42.75, -37.25, 0.441023, 49.5, -31, 0.441023, 49.5, -1, 0.441023, -1, -49.5, 0.441023, 10.25, -49.5, 0.441023, 16.75, -12.25, 0.441023, 49.5, -6, 0.441023, 49.5, -49.5, 0.441023, 29.75, -49.5, 0.441023, 36.25, -31, 0.441023, 49.5, -24.75, 0.441023, 49.5, 0.25, 0.441023, 49.5, 0.25, 0.441023, -0.75, -1, 0.441023, -1, -6, 0.441023, 49.5, -49.5, 0.441023, 23.25, -49.5, 0.441023, 29.75, -24.75, 0.441023, 49.5, -18.5, 0.441023, 49.5, -1, 0.441023, -1, -49.5, 0.441023, 3.75, -49.5, 0.441023, 10.25, -49.5, 0.441023, 16.75, -49.5, 0.441023, 23.25, -18.5, 0.441023, 49.5, -12.25, 0.441023, 49.5, -1, 0.441023, -1, -1, 0.441023, -2.75, -49.5, 0.441023, -2.75, -49.5, 0.441023, 3.75, 43.25, 0.441023, 49.5, 49.5, 0.441023, 49.5, 49.5, 0.441023, 42.75, 37, 0.441023, 49.5, 43.25, 0.441023, 49.5, 49.5, 0.441023, 42.75, 37, 0.441023, 49.5, 49.5, 0.441023, 42.75, 49.5, 0.441023, 36.25, 30.75, 0.441023, 49.5, 0.25, 0.441023, -0.75, 0.25, 0.441023, 49.5, 6.25, 0.441023, 49.5, 30.75, 0.441023, 49.5, 49.5, 0.441023, 36.25, 49.5, 0.441023, 29.75, 24.75, 0.441023, 49.5, 0.25, 0.441023, -0.75, 6.25, 0.441023, 49.5, 12.5, 0.441023, 49.5, 49.5, 0.441023, 16.75, 49.5, 0.441023, 10.25, 24.75, 0.441023, 49.5, 49.5, 0.441023, 29.75, 49.5, 0.441023, 23.25, 18.5, 0.441023, 49.5, 49.5, 0.441023, 3.75, 1.25, 0.441023, -1, 0.25, 0.441023, -0.75, 49.5, 0.441023, 10.25, 18.5, 0.441023, 49.5, 49.5, 0.441023, 23.25, 49.5, 0.441023, 16.75, 12.5, 0.441023, 49.5, 49.5, 0.441023, -2.75, 1.25, 0.441023, -2.75, 1.25, 0.441023, -1, 49.5, 0.441023, 3.75)
+polygons = [PackedInt32Array(2, 1, 0), PackedInt32Array(5, 4, 3), PackedInt32Array(8, 7, 6), PackedInt32Array(11, 10, 9), PackedInt32Array(14, 13, 12), PackedInt32Array(15, 18, 16), PackedInt32Array(16, 18, 17), PackedInt32Array(19, 24, 20), PackedInt32Array(20, 24, 21), PackedInt32Array(21, 24, 22), PackedInt32Array(22, 24, 23), PackedInt32Array(26, 25, 27), PackedInt32Array(27, 25, 28), PackedInt32Array(31, 30, 29), PackedInt32Array(34, 33, 32), PackedInt32Array(37, 36, 35), PackedInt32Array(40, 39, 38), PackedInt32Array(43, 42, 41), PackedInt32Array(46, 45, 44), PackedInt32Array(48, 47, 49), PackedInt32Array(49, 47, 50), PackedInt32Array(53, 52, 54), PackedInt32Array(54, 52, 51), PackedInt32Array(54, 51, 56), PackedInt32Array(54, 56, 55), PackedInt32Array(58, 57, 59), PackedInt32Array(59, 57, 60), PackedInt32Array(63, 62, 61), PackedInt32Array(66, 65, 64), PackedInt32Array(69, 68, 67), PackedInt32Array(71, 70, 72), PackedInt32Array(72, 70, 73), PackedInt32Array(75, 74, 76), PackedInt32Array(76, 74, 77), PackedInt32Array(77, 74, 78), PackedInt32Array(80, 79, 81), PackedInt32Array(81, 79, 82), PackedInt32Array(84, 83, 85), PackedInt32Array(85, 83, 86), PackedInt32Array(88, 87, 89), PackedInt32Array(89, 87, 90), PackedInt32Array(93, 92, 91), PackedInt32Array(95, 94, 96), PackedInt32Array(96, 94, 97), PackedInt32Array(99, 98, 100), PackedInt32Array(100, 98, 101), PackedInt32Array(104, 103, 102), PackedInt32Array(107, 106, 105), PackedInt32Array(109, 108, 110), PackedInt32Array(110, 108, 111), PackedInt32Array(114, 113, 112), PackedInt32Array(116, 115, 117), PackedInt32Array(117, 115, 118), PackedInt32Array(120, 119, 121), PackedInt32Array(121, 119, 122), PackedInt32Array(122, 119, 123), PackedInt32Array(125, 124, 126), PackedInt32Array(126, 124, 127), PackedInt32Array(129, 128, 130), PackedInt32Array(130, 128, 131), PackedInt32Array(132, 135, 133), PackedInt32Array(133, 135, 134), PackedInt32Array(137, 136, 138), PackedInt32Array(138, 136, 139)]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vanmn"]
+albedo_color = Color(0.572549, 0.211765, 0.752941, 1)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_80s6u"]
+viewport_path = NodePath("UI/HUD/SubViewport")
+
+[sub_resource type="LabelSettings" id="LabelSettings_eiu5o"]
+font_size = 45
+
+[sub_resource type="Theme" id="Theme_dsyb6"]
+default_font_size = 44
+
+[node name="Node3D" type="Node3D"]
+
+[node name="env" type="Node3D" parent="."]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="env"]
+environment = SubResource("Environment_kann8")
+
+[node name="world" type="NavigationRegion3D" parent="."]
+navigation_mesh = SubResource("NavigationMesh_k5x6j")
+
+[node name="Objects" type="Node3D" parent="world"]
+
+[node name="floor" type="CSGBox3D" parent="world/Objects"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+use_collision = true
+size = Vector3(200, 0.01, 200)
+metadata/frictionFactor = 10.0
+
+[node name="stairs" type="StaticBody3D" parent="world/Objects"]
+
+[node name="boite" type="CSGBox3D" parent="world/Objects/stairs"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.01, -0.50959, -1)
+size = Vector3(1, 1.29778, 1)
+material = SubResource("StandardMaterial3D_vanmn")
+
+[node name="boite2" type="CSGBox3D" parent="world/Objects/stairs"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.01, -0.0471806, -1.5)
+material = SubResource("StandardMaterial3D_vanmn")
+
+[node name="boite3" type="CSGBox3D" parent="world/Objects/stairs"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.01, 0.266819, -2)
+material = SubResource("StandardMaterial3D_vanmn")
+
+[node name="boite4" type="CSGBox3D" parent="world/Objects/stairs"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.01, 0.577144, -2.5)
+material = SubResource("StandardMaterial3D_vanmn")
+
+[node name="boite5" type="CSGBox3D" parent="world/Objects/stairs"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.01, 0.893795, -3)
+use_collision = true
+material = SubResource("StandardMaterial3D_vanmn")
+
+[node name="CollisionPolygon3D" type="CollisionPolygon3D" parent="world/Objects/stairs"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -3.46303e-05, 0, -1.26751)
+polygon = PackedVector2Array(1.239, 0, -1, 0, 1.23949, 1.39858)
+metadata/frictionFactor = 1.0
+
+[node name="Ennemies" type="Node3D" parent="world"]
+unique_name_in_owner = true
+
+[node name="Throwables" type="Node3D" parent="world"]
+script = ExtResource("4_37rq8")
+
+[node name="player" parent="." node_paths=PackedStringArray("_menu", "_throwingEnv") instance=ExtResource("5_qxv26")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 2)
+_menu = NodePath("../UI/Menu")
+_throwingEnv = NodePath("../world/Throwables")
+
+[node name="UI" type="Node2D" parent="."]
+
+[node name="Camera2D" type="Camera2D" parent="UI"]
+
+[node name="HUD" type="Node2D" parent="UI"]
+
+[node name="Sprite2D" type="Sprite2D" parent="UI/HUD"]
+texture = ExtResource("6_gu0s3")
+region_filter_clip_enabled = true
+
+[node name="SubViewport" type="SubViewport" parent="UI/HUD"]
+own_world_3d = true
+transparent_bg = true
+
+[node name="Overlay" parent="UI/HUD/SubViewport" instance=ExtResource("8_8pvrx")]
+
+[node name="Sprite2D2" type="Sprite2D" parent="UI/HUD"]
+position = Vector2(252, 1)
+scale = Vector2(1.26563, 1.26172)
+texture = SubResource("ViewportTexture_80s6u")
+
+[node name="Control" type="Control" parent="UI/HUD"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -576.0
+offset_top = -321.0
+offset_right = 575.0
+offset_bottom = 324.0
+
+[node name="Label" type="Label" parent="UI/HUD/Control"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -121.5
+offset_right = 121.5
+offset_bottom = 52.0
+grow_horizontal = 2
+text = "You survived for: XX:XX:XX
+Ennemies remaining: XXX"
+
+[node name="Menu" type="Node2D" parent="UI"]
+script = ExtResource("4_i7nxl")
+
+[node name="Control" type="Control" parent="UI/Menu"]
+layout_direction = 2
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -578.5
+offset_top = -324.5
+offset_right = 578.5
+offset_bottom = 324.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ColorRect" type="ColorRect" parent="UI/Menu/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.239216, 0.239216, 0.239216, 0.439216)
+
+[node name="Label" type="Label" parent="UI/Menu/Control"]
+layout_direction = 2
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -44.0
+offset_top = -13.0
+offset_right = 44.0
+offset_bottom = 13.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Paused"
+label_settings = SubResource("LabelSettings_eiu5o")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="UI/Menu/Control" node_paths=PackedStringArray("_menu")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -88.5
+offset_top = 70.99
+offset_right = 88.5
+offset_bottom = 139.99
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_dsyb6")
+text = "Resume"
+script = ExtResource("5_vrmjn")
+_menu = NodePath("../..")
