@@ -1,6 +1,7 @@
-[gd_scene load_steps=16 format=3 uid="uid://c1fwbbtxpgl3v"]
+[gd_scene load_steps=17 format=3 uid="uid://c1fwbbtxpgl3v"]
 
 [ext_resource type="Texture2D" uid="uid://dh1jqp0gtqbjg" path="res://assets/hdris/kloofendal_48d_partly_cloudy_puresky_2k.hdr" id="1_gyip7"]
+[ext_resource type="Script" path="res://Scripts/Ennemies/Collection.cs" id="2_lff03"]
 [ext_resource type="Script" path="res://Scripts/Misc/Throwables.cs" id="4_37rq8"]
 [ext_resource type="Script" path="res://Scripts/UI/Menu/Main.cs" id="4_i7nxl"]
 [ext_resource type="PackedScene" uid="uid://dampcyombgepl" path="res://Prefabs/Player/Player.tscn" id="5_qxv26"]
@@ -84,6 +85,7 @@ metadata/frictionFactor = 1.0
 
 [node name="Ennemies" type="Node3D" parent="world"]
 unique_name_in_owner = true
+script = ExtResource("2_lff03")
 
 [node name="Throwables" type="Node3D" parent="world"]
 script = ExtResource("4_37rq8")
