@@ -1,9 +1,8 @@
-[gd_scene load_steps=19 format=3 uid="uid://c1fwbbtxpgl3v"]
+[gd_scene load_steps=18 format=3 uid="uid://c1fwbbtxpgl3v"]
 
 [ext_resource type="Texture2D" uid="uid://dh1jqp0gtqbjg" path="res://assets/hdris/kloofendal_48d_partly_cloudy_puresky_2k.hdr" id="1_gyip7"]
 [ext_resource type="Script" path="res://Scripts/Ennemies/Collection.cs" id="2_lff03"]
 [ext_resource type="PackedScene" uid="uid://bt0b3mnccx6" path="res://Prefabs/Ennemy/Ennemy.tscn" id="3_ynwm1"]
-[ext_resource type="Script" path="res://Scripts/Misc/Throwables.cs" id="4_37rq8"]
 [ext_resource type="Script" path="res://Scripts/UI/Menu/Main.cs" id="4_i7nxl"]
 [ext_resource type="PackedScene" uid="uid://dampcyombgepl" path="res://Prefabs/Player/Player.tscn" id="5_qxv26"]
 [ext_resource type="Script" path="res://Scripts/UI/Menu/Resume.cs" id="5_vrmjn"]
@@ -367,7 +366,6 @@ _enemyPrefab = ExtResource("3_ynwm1")
 _hudPrompt = NodePath("../../UI/HUD/Control/Label")
 
 [node name="Throwables" type="Node3D" parent="world"]
-script = ExtResource("4_37rq8")
 
 [node name="player" parent="." node_paths=PackedStringArray("_menu", "_throwingEnv") instance=ExtResource("5_qxv26")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 2)

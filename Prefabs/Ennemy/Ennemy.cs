@@ -116,6 +116,18 @@ public partial class Ennemy: CharacterBody3D
         }
         
         MovementTarget = Player.GlobalTransform.Origin;
+
+        var toPlayerV = Player.GlobalTransform.Origin - GlobalTransform.Origin;
+        
+        _hpBar.GlobalTransform = _hpBar.GlobalTransform with
+        {
+            Basis = _hpBar.GlobalTransform.Basis with
+            {
+                X = toPlayerV.Rotated(Vector3.Up, (float)Math.Tau / 4).Normalized() * 0.082f,
+                Y = Vector3.Up * 0.082f,
+                Z = toPlayerV.Normalized() * 0.082f
+            }
+        };
     }
 
     private async void ActorSetup()
