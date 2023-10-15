@@ -5,7 +5,7 @@
 
 [sub_resource type="Animation" id="Animation_51klv"]
 resource_name = "melee"
-length = 0.9
+length = 0.4
 step = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -14,7 +14,7 @@ tracks/0/path = NodePath(".:position")
 tracks/0/interp = 2
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0.3, 0.45, 0.6),
+"times": PackedFloat32Array(0.05, 0.2, 0.35),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
 "values": [Vector3(0.0959557, -0.153846, 0.0260848), Vector3(0.157532, -0.153846, -0.095321), Vector3(0.324982, -0.153846, -0.0586933)]
@@ -26,7 +26,7 @@ tracks/1/path = NodePath(".:rotation")
 tracks/1/interp = 2
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0.3, 0.45, 0.6),
+"times": PackedFloat32Array(0.05, 0.2, 0.35),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
 "values": [Vector3(0.135472, 1.26259, 1.56556), Vector3(0.135472, 0.229354, 1.56556), Vector3(0.135472, -0.915129, 1.56556)]
@@ -38,7 +38,7 @@ tracks/2/path = NodePath("../CSGCylinder3D:position")
 tracks/2/interp = 2
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.3, 0.6, 0.9),
+"times": PackedFloat32Array(0, 0.05, 0.35, 0.4),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 0,
 "values": [Vector3(0.215721, -0.225001, -0.0564355), Vector3(0.215721, -0.370846, 0.0801353), Vector3(0.215721, -0.370846, 0.0801353), Vector3(0.215721, -0.225001, -0.0564355)]
@@ -50,7 +50,7 @@ tracks/3/path = NodePath("../CSGCylinder3D:rotation")
 tracks/3/interp = 2
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.3, 0.6, 0.9),
+"times": PackedFloat32Array(0, 0.05, 0.35, 0.4),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 0,
 "values": [Vector3(-1.08464, -0.567489, 0.733584), Vector3(-1.2599, -2.17849, 2.42209), Vector3(-1.2599, -2.17849, 2.42209), Vector3(-1.08464, -0.567489, 0.733584)]
