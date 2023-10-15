@@ -1,7 +1,8 @@
-[gd_scene load_steps=18 format=3 uid="uid://c1fwbbtxpgl3v"]
+[gd_scene load_steps=19 format=3 uid="uid://c1fwbbtxpgl3v"]
 
 [ext_resource type="Texture2D" uid="uid://dh1jqp0gtqbjg" path="res://assets/hdris/kloofendal_48d_partly_cloudy_puresky_2k.hdr" id="1_gyip7"]
 [ext_resource type="Script" path="res://Scripts/Ennemies/Collection.cs" id="2_lff03"]
+[ext_resource type="PackedScene" uid="uid://bt0b3mnccx6" path="res://Prefabs/Ennemy/Ennemy.tscn" id="3_ynwm1"]
 [ext_resource type="Script" path="res://Scripts/Misc/Throwables.cs" id="4_37rq8"]
 [ext_resource type="Script" path="res://Scripts/UI/Menu/Main.cs" id="4_i7nxl"]
 [ext_resource type="PackedScene" uid="uid://dampcyombgepl" path="res://Prefabs/Player/Player.tscn" id="5_qxv26"]
@@ -89,7 +90,7 @@ metadata/frictionFactor = 1.0
 [node name="walls" type="Node3D" parent="world/Objects"]
 
 [node name="wall1" type="StaticBody3D" parent="world/Objects/walls"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 16.138)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -38.8954, 0.4, 48.8631)
 
 [node name="CSGBox3D" type="CSGBox3D" parent="world/Objects/walls/wall1"]
 size = Vector3(40, 10, 1)
@@ -97,17 +98,8 @@ size = Vector3(40, 10, 1)
 [node name="CollisionShape3D" type="CollisionShape3D" parent="world/Objects/walls/wall1"]
 shape = SubResource("BoxShape3D_v1hym")
 
-[node name="wall2" type="StaticBody3D" parent="world/Objects/walls"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 32.276)
-
-[node name="CSGBox3D" type="CSGBox3D" parent="world/Objects/walls/wall2"]
-size = Vector3(40, 10, 1)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="world/Objects/walls/wall2"]
-shape = SubResource("BoxShape3D_v1hym")
-
 [node name="wall3" type="StaticBody3D" parent="world/Objects/walls"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.0766, 0.799996, -16.1455)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -51.9583, 0.799996, 16.5796)
 
 [node name="CSGBox3D" type="CSGBox3D" parent="world/Objects/walls/wall3"]
 size = Vector3(40, 10, 1)
@@ -116,7 +108,7 @@ size = Vector3(40, 10, 1)
 shape = SubResource("BoxShape3D_v1hym")
 
 [node name="wall4" type="StaticBody3D" parent="world/Objects/walls"]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0.8, 32.276)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -31.8817, 0.8, 65.0011)
 
 [node name="CSGBox3D" type="CSGBox3D" parent="world/Objects/walls/wall4"]
 size = Vector3(40, 10, 1)
@@ -125,7 +117,7 @@ size = Vector3(40, 10, 1)
 shape = SubResource("BoxShape3D_v1hym")
 
 [node name="wall5" type="StaticBody3D" parent="world/Objects/walls"]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0.8, -25.6249)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -31.8817, 0.8, 7.10021)
 
 [node name="CSGBox3D" type="CSGBox3D" parent="world/Objects/walls/wall5"]
 size = Vector3(40, 10, 1)
@@ -134,7 +126,7 @@ size = Vector3(40, 10, 1)
 shape = SubResource("BoxShape3D_v1hym")
 
 [node name="wall6" type="StaticBody3D" parent="world/Objects/walls"]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -19.022, 0.799996, 3.96022)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -50.9037, 0.799996, 36.6853)
 
 [node name="CSGBox3D" type="CSGBox3D" parent="world/Objects/walls/wall6"]
 size = Vector3(40, 10, 1)
@@ -142,9 +134,237 @@ size = Vector3(40, 10, 1)
 [node name="CollisionShape3D" type="CollisionShape3D" parent="world/Objects/walls/wall6"]
 shape = SubResource("BoxShape3D_v1hym")
 
-[node name="Ennemies" type="Node3D" parent="world"]
+[node name="wall7" type="StaticBody3D" parent="world/Objects/walls"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -57.3439, 0.799996, 68.145)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="world/Objects/walls/wall7"]
+size = Vector3(40, 10, 1)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="world/Objects/walls/wall7"]
+shape = SubResource("BoxShape3D_v1hym")
+
+[node name="wall8" type="StaticBody3D" parent="world/Objects/walls"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 21.683, 0.799996, 26.7373)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="world/Objects/walls/wall8"]
+size = Vector3(40, 10, 1)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="world/Objects/walls/wall8"]
+shape = SubResource("BoxShape3D_v1hym")
+
+[node name="wall9" type="StaticBody3D" parent="world/Objects/walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.592, 0.799996, 76.2085)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="world/Objects/walls/wall9"]
+size = Vector3(40, 10, 1)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="world/Objects/walls/wall9"]
+shape = SubResource("BoxShape3D_v1hym")
+
+[node name="wall10" type="StaticBody3D" parent="world/Objects/walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.5885, 0.799996, 8.1678)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="world/Objects/walls/wall10"]
+size = Vector3(40, 10, 1)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="world/Objects/walls/wall10"]
+shape = SubResource("BoxShape3D_v1hym")
+
+[node name="wall11" type="StaticBody3D" parent="world/Objects/walls"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -11.7886, 0.799996, 27.8386)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="world/Objects/walls/wall11"]
+size = Vector3(40, 10, 1)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="world/Objects/walls/wall11"]
+shape = SubResource("BoxShape3D_v1hym")
+
+[node name="wall12" type="StaticBody3D" parent="world/Objects/walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.89196, 0.4, -29.578)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="world/Objects/walls/wall12"]
+size = Vector3(40, 10, 1)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="world/Objects/walls/wall12"]
+shape = SubResource("BoxShape3D_v1hym")
+
+[node name="wall13" type="StaticBody3D" parent="world/Objects/walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 65.3608, 0.8, -33.7297)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="world/Objects/walls/wall13"]
+size = Vector3(40, 10, 1)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="world/Objects/walls/wall13"]
+shape = SubResource("BoxShape3D_v1hym")
+
+[node name="wall14" type="StaticBody3D" parent="world/Objects/walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.17097, 0.799996, -61.8615)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="world/Objects/walls/wall14"]
+size = Vector3(40, 10, 1)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="world/Objects/walls/wall14"]
+shape = SubResource("BoxShape3D_v1hym")
+
+[node name="wall15" type="StaticBody3D" parent="world/Objects/walls"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 11.9056, 0.8, -13.44)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="world/Objects/walls/wall15"]
+size = Vector3(40, 10, 1)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="world/Objects/walls/wall15"]
+shape = SubResource("BoxShape3D_v1hym")
+
+[node name="wall16" type="StaticBody3D" parent="world/Objects/walls"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 11.9056, 0.8, -71.3409)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="world/Objects/walls/wall16"]
+size = Vector3(40, 10, 1)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="world/Objects/walls/wall16"]
+shape = SubResource("BoxShape3D_v1hym")
+
+[node name="wall17" type="StaticBody3D" parent="world/Objects/walls"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -7.11636, 0.799996, -41.7558)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="world/Objects/walls/wall17"]
+size = Vector3(40, 10, 1)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="world/Objects/walls/wall17"]
+shape = SubResource("BoxShape3D_v1hym")
+
+[node name="wall18" type="StaticBody3D" parent="world/Objects/walls"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -13.5566, 0.799996, -10.2962)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="world/Objects/walls/wall18"]
+size = Vector3(40, 10, 1)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="world/Objects/walls/wall18"]
+shape = SubResource("BoxShape3D_v1hym")
+
+[node name="wall19" type="StaticBody3D" parent="world/Objects/walls"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 65.4703, 0.799996, -51.7038)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="world/Objects/walls/wall19"]
+size = Vector3(40, 10, 1)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="world/Objects/walls/wall19"]
+shape = SubResource("BoxShape3D_v1hym")
+
+[node name="wall20" type="StaticBody3D" parent="world/Objects/walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23.1953, 0.799996, -2.23262)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="world/Objects/walls/wall20"]
+size = Vector3(40, 10, 1)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="world/Objects/walls/wall20"]
+shape = SubResource("BoxShape3D_v1hym")
+
+[node name="wall21" type="StaticBody3D" parent="world/Objects/walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 29.1988, 0.799996, -70.2733)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="world/Objects/walls/wall21"]
+size = Vector3(40, 10, 1)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="world/Objects/walls/wall21"]
+shape = SubResource("BoxShape3D_v1hym")
+
+[node name="wall22" type="StaticBody3D" parent="world/Objects/walls"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 31.9988, 0.799996, -50.6025)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="world/Objects/walls/wall22"]
+size = Vector3(40, 10, 1)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="world/Objects/walls/wall22"]
+shape = SubResource("BoxShape3D_v1hym")
+
+[node name="wall23" type="StaticBody3D" parent="world/Objects/walls"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 42.2174, 0.4, 63.4546)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="world/Objects/walls/wall23"]
+size = Vector3(40, 10, 1)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="world/Objects/walls/wall23"]
+shape = SubResource("BoxShape3D_v1hym")
+
+[node name="wall25" type="StaticBody3D" parent="world/Objects/walls"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 74.5009, 0.799996, 50.3917)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="world/Objects/walls/wall25"]
+size = Vector3(40, 10, 1)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="world/Objects/walls/wall25"]
+shape = SubResource("BoxShape3D_v1hym")
+
+[node name="wall26" type="StaticBody3D" parent="world/Objects/walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.0794, 0.8, 70.4683)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="world/Objects/walls/wall26"]
+size = Vector3(40, 10, 1)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="world/Objects/walls/wall26"]
+shape = SubResource("BoxShape3D_v1hym")
+
+[node name="wall27" type="StaticBody3D" parent="world/Objects/walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 83.9803, 0.8, 70.4683)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="world/Objects/walls/wall27"]
+size = Vector3(40, 10, 1)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="world/Objects/walls/wall27"]
+shape = SubResource("BoxShape3D_v1hym")
+
+[node name="wall28" type="StaticBody3D" parent="world/Objects/walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 54.3952, 0.799996, 51.4463)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="world/Objects/walls/wall28"]
+size = Vector3(40, 10, 1)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="world/Objects/walls/wall28"]
+shape = SubResource("BoxShape3D_v1hym")
+
+[node name="wall29" type="StaticBody3D" parent="world/Objects/walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.9355, 0.799996, 45.0061)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="world/Objects/walls/wall29"]
+size = Vector3(40, 10, 1)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="world/Objects/walls/wall29"]
+shape = SubResource("BoxShape3D_v1hym")
+
+[node name="wall31" type="StaticBody3D" parent="world/Objects/walls"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 14.872, 0.799996, 81.758)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="world/Objects/walls/wall31"]
+size = Vector3(40, 10, 1)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="world/Objects/walls/wall31"]
+shape = SubResource("BoxShape3D_v1hym")
+
+[node name="wall32" type="StaticBody3D" parent="world/Objects/walls"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 82.9127, 0.799996, 87.7614)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="world/Objects/walls/wall32"]
+size = Vector3(40, 10, 1)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="world/Objects/walls/wall32"]
+shape = SubResource("BoxShape3D_v1hym")
+
+[node name="wall33" type="StaticBody3D" parent="world/Objects/walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 63.2419, 0.799996, 90.5614)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="world/Objects/walls/wall33"]
+size = Vector3(40, 10, 1)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="world/Objects/walls/wall33"]
+shape = SubResource("BoxShape3D_v1hym")
+
+[node name="Ennemies" type="Node3D" parent="world" node_paths=PackedStringArray("_player", "_hudPrompt")]
 unique_name_in_owner = true
 script = ExtResource("2_lff03")
+_player = NodePath("../../player")
+_enemyPrefab = ExtResource("3_ynwm1")
+_hudPrompt = NodePath("../../UI/HUD/Control/Label")
 
 [node name="Throwables" type="Node3D" parent="world"]
 script = ExtResource("4_37rq8")
