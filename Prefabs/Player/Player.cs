@@ -124,7 +124,7 @@ public partial class Player : CharacterBody3D
         var floor = _floorDetector.GetCollider();
         double floorFriction = 10;
         if (floor is not null) 
-            floorFriction = floor.GetMeta("frictionFactor").AsDouble();
+            floorFriction = floor.GetMeta("frictionFactor", 10).AsDouble();
 
         var movementDelta = delta * _speed * floorFriction;
         if (!direction.IsZeroApprox())

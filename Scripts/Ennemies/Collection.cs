@@ -32,10 +32,11 @@ public partial class Collection : Node3D
 		}
 		_secondCounter += delta;
 
-		if (_secondCounter > (new Random()).NextDouble() * 10/ (_totalTime * .2))
+		if (_secondCounter > new Random().NextDouble() * 10/ (_totalTime * .2))
 		{
-			Spawn();
 			_secondCounter = 0;
+			if(GetChildren().Count <50)
+				Spawn();
 		}
 
 		var enemiesRemaining = GetChildren().Count;

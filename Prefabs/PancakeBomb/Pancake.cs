@@ -40,7 +40,7 @@ public partial class Pancake: RigidBody3D
             var explodedCollider = _killCast.GetCollider(i);
             if (explodedCollider is Ennemy.Ennemy ennemy)
             {
-                ennemy.Die();
+                ennemy.Damage(20);
             }
         }
     }
