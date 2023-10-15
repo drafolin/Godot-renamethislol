@@ -367,10 +367,11 @@ _hudPrompt = NodePath("../../UI/HUD/Control/Label")
 
 [node name="Throwables" type="Node3D" parent="world"]
 
-[node name="player" parent="." node_paths=PackedStringArray("_menu", "_throwingEnv") instance=ExtResource("5_qxv26")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 2)
+[node name="player" parent="." node_paths=PackedStringArray("_menu", "_throwingEnv", "_overlay") instance=ExtResource("5_qxv26")]
+transform = Transform3D(0.999999, -6.48191e-08, 0.00172787, 6.71894e-08, 1, -1.37422e-06, -0.00172787, 1.37434e-06, 0.999999, 0, 2, 2)
 _menu = NodePath("../UI/Menu")
 _throwingEnv = NodePath("../world/Throwables")
+_overlay = NodePath("../UI/HUD/SubViewport/Overlay")
 
 [node name="UI" type="Node2D" parent="."]
 

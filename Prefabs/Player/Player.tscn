@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://dampcyombgepl"]
+[gd_scene load_steps=8 format=3 uid="uid://dampcyombgepl"]
 
 [ext_resource type="Script" path="res://Prefabs/Player/Player.cs" id="1_uqiw6"]
 [ext_resource type="PackedScene" uid="uid://c7vba3srkgg85" path="res://Prefabs/PancakeBomb/Pancake.tscn" id="2_ts3vl"]
@@ -20,6 +20,9 @@ albedo_color = Color(0, 0, 0, 1)
 material = SubResource("StandardMaterial3D_puubq")
 radius = 0.07
 height = 0.5
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1eisx"]
+size = Vector3(2, 1, 2)
 
 [node name="player" type="CharacterBody3D" node_paths=PackedStringArray("_pivot", "_camera")]
 input_ray_pickable = false
@@ -49,3 +52,8 @@ draw_pass_1 = SubResource("CapsuleMesh_3qvko")
 [node name="RayCast3D" type="RayCast3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
 target_position = Vector3(0, -0.3, 0)
+
+[node name="MeleeHitBox" type="ShapeCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0839863, -0.0857283, 0.094703)
+shape = SubResource("BoxShape3D_1eisx")
+target_position = Vector3(0, 0, -1.5)

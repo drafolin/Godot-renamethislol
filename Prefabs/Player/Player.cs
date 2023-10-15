@@ -1,5 +1,6 @@
 using System;
 using Godot;
+using Animation = Test12.Prefabs.CameraOverlay.Animation;
 using Main = Test12.Scripts.UI.Menu.Main;
 using Pancake = Test12.Prefabs.PancakeBomb.Pancake;
 
@@ -18,7 +19,11 @@ public partial class Player : CharacterBody3D
     [Export] private Node3D _throwingEnv;
     [Export] private PackedScene _pancake;
     [Export] private double _gunDamage = 1;
+    [Export] private Node3D _overlay;
+    [Export] private float _meleeDamage = 1;
+    [Export] private ShapeCast3D _meleeHitBox;
     private RayCast3D _floorDetector;
+    private Animation _overlayAnimation;
 
     private float _rotationX;
     private float _rotationY;
@@ -31,6 +36,8 @@ public partial class Player : CharacterBody3D
         Input.MouseMode = Input.MouseModeEnum.Captured;
         _floorDetector = GetNode<RayCast3D>("RayCast3D");
         _bullet = GetNode<GpuParticles3D>("Pivot/GPUParticles3D");
+        _overlayAnimation = _overlay.GetNode<Animation>("Overlay");
+        _meleeHitBox ??= GetNode<ShapeCast3D>("MeleeHitBox");
     }
 
     public override void _Input(InputEvent @event)
@@ -84,6 +91,9 @@ public partial class Player : CharacterBody3D
                 else
                     _menu.Open();
                 return;
+            case not null when @event.IsActionPressed("melee"):
+                Melee();
+                break;
             case InputEventMouseButton when Input.MouseMode == Input.MouseModeEnum.Visible:
                 return;
             case InputEventMouseButton eventMb when eventMb.IsActionPressed("shoot") :
@@ -174,5 +184,18 @@ public partial class Player : CharacterBody3D
             _camera.Fov /= 2;
         else
             _camera.Fov *= 2;
+    }
+
+    private void Melee()
+    {
+        if (_overlayAnimation.IsPlaying()) return;
+        _overlayAnimation.Play("melee");
+
+        for (int i = 0; i < _meleeHitBox.GetCollisionCount(); i++)
+        {
+            var collided = _meleeHitBox.GetCollider(i);
+            if (collided is not Ennemy.Ennemy ennemy) return;
+            ennemy.Damage(_meleeDamage);
+        }
     }
 }
