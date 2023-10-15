@@ -25,8 +25,19 @@ public partial class Pancake: RigidBody3D
         NavigationServer3D.ObstacleSetMap(_obstacle.GetRid(), mapRid);
         NavigationServer3D.ObstacleSetAvoidanceEnabled(_obstacle.GetRid(), true);
     }
+    
+    public override void _Input(InputEvent @event)
+    {
+        switch (@event)
+        {
+            case InputEventKey action when action.IsActionPressed("explode"):
+                GD.Print("boom!");
+                Explode();
+                break;
+        }
+    }
 
-    public void Explode()
+    private void Explode()
     {
         _obstacle.AvoidanceEnabled = false;
         _obstacle.QueueFree();
