@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using Godot;
 using Test12.Prefabs.Explosion;
@@ -78,20 +78,12 @@ public partial class Ennemy: CharacterBody3D
         var xzMask = new Vector3(1, 0, 1);
         var xzVelocity = Velocity * xzMask;       
         var movementDirection = (nextPathPosition - currentAgentPosition).Normalized();
-        var navVector = movementDirection * (float)_acceleration * xzMask;
-        var limitedNavVector = navVector.LimitLength((float)_maxSpeed);
-        var ponderedNavVector = xzVelocity.MoveToward(
-            limitedNavVector, 
-            (float)delta);
-        var acceleration = ponderedNavVector - xzVelocity;
         
-        // Adds airborne penalty.
-        if (!IsOnFloor())
-        {
-            acceleration /= airBornePenalty;
-        }
+        var movementAcceleration = xzVelocity.MoveToward(
+            movementDirection.Normalized() * xzMask * (float)_maxSpeed, 
+            (float)(delta * _acceleration * floorFriction));
         
-        Velocity += acceleration;
+        Velocity += movementAcceleration - xzVelocity;
         
         MoveAndSlide();
     }
