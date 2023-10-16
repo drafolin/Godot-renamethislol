@@ -84,7 +84,7 @@ public partial class Player : CharacterBody3D
                 
                 break;
             }
-            case InputEventKey eventKey when eventKey.IsActionPressed("bomb"):
+            case var _ when @event.IsActionPressed("bomb"):
                 var newBomb = _pancake.Instantiate<Pancake>();
                 newBomb.LinearVelocity = _pivot.GlobalTransform.Basis.Z * -12;
                 newBomb.Transform = newBomb.Transform with
