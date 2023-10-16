@@ -10,6 +10,7 @@ public partial class Collection : Node3D
 	[Export] private Player _player;
 	[Export] private PackedScene _enemyPrefab;
 	[Export] private Label _hudPrompt;
+	[Export] private int _maxEnnemies = 30;
 
 	private double _secondCounter;
 	private double _totalTime;
@@ -35,7 +36,7 @@ public partial class Collection : Node3D
 		if (_secondCounter > new Random().NextDouble() * 10/ (_totalTime * .2))
 		{
 			_secondCounter = 0;
-			if(GetChildren().Count < 50)
+			if(GetChildren().Count < _maxEnnemies)
 				Spawn();
 		}
 

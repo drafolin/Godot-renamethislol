@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://dh1jqp0gtqbjg" path="res://assets/hdris/kloofendal_48d_partly_cloudy_puresky_2k.hdr" id="1_gyip7"]
 [ext_resource type="Script" path="res://Scripts/Ennemies/Collection.cs" id="2_lff03"]
-[ext_resource type="PackedScene" uid="uid://bt0b3mnccx6" path="res://Prefabs/Ennemy/Ennemy.tscn" id="3_ynwm1"]
+[ext_resource type="PackedScene" uid="uid://bt0b3mnccx6" path="res://Prefabs/Ennemy/RayMan.tscn" id="3_olkre"]
 [ext_resource type="Script" path="res://Scripts/UI/Menu/Main.cs" id="4_i7nxl"]
 [ext_resource type="PackedScene" uid="uid://dampcyombgepl" path="res://Prefabs/Player/Player.tscn" id="5_qxv26"]
 [ext_resource type="Script" path="res://Scripts/UI/Menu/Resume.cs" id="5_vrmjn"]
@@ -370,7 +370,7 @@ shape = SubResource("BoxShape3D_v1hym")
 unique_name_in_owner = true
 script = ExtResource("2_lff03")
 _player = NodePath("../../player")
-_enemyPrefab = ExtResource("3_ynwm1")
+_enemyPrefab = ExtResource("3_olkre")
 _hudPrompt = NodePath("../../UI/HUD/Control/Label")
 
 [node name="Throwables" type="Node3D" parent="world"]
