@@ -44,6 +44,7 @@ public partial class Ennemy: CharacterBody3D
     private double _health;
     private NavigationAgent3D _navigationAgent;
     private Runnable[] _deferredActions = Array.Empty<Runnable>();
+    private Vector3 _previousSafeVelocity = Vector3.Zero;
 
     private Vector3 MovementTarget
     {
@@ -164,7 +165,9 @@ public partial class Ennemy: CharacterBody3D
 
     private void _OnNavigationAgent3dVelocityComputed(Vector3 safeVelocity)
     {
-        Velocity += safeVelocity;
+        Velocity -= _previousSafeVelocity;
+        _previousSafeVelocity = safeVelocity;
+        Velocity += _previousSafeVelocity;
     }
 
     public void Damage(float dmg)
