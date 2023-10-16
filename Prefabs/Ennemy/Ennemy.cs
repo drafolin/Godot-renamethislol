@@ -31,6 +31,7 @@ public partial class Ennemy: CharacterBody3D
     [Export] protected double Gravity = (double)ProjectSettings.GetSetting("physics/3d/default_gravity");
     [Export] protected double Acceleration = 4;
     [Export] protected double MaxSpeed = 5.3;
+    [Export] protected float AirbornePenalty = 4f;
     [Export] protected Particles ExplosionParticles;
     [Export] protected CollisionShape3D Collider;
     [Export] protected double MaxHealth = 2;
@@ -81,7 +82,6 @@ public partial class Ennemy: CharacterBody3D
         
         var currentAgentPosition = GlobalTransform.Origin;
         var nextPathPosition = NavigationAgent.GetNextPathPosition();
-        const float airBornePenalty = 1000f;
         
         var xzMask = new Vector3(1, 0, 1);
         var xzVelocity = Velocity * xzMask;       
@@ -89,7 +89,7 @@ public partial class Ennemy: CharacterBody3D
         
         var movementAcceleration = xzVelocity.MoveToward(
             movementDirection.Normalized() * xzMask * (float)MaxSpeed, 
-            (float)(delta * Acceleration * floorFriction));
+            (float)(delta * Acceleration * floorFriction / AirbornePenalty));
         
         Velocity += movementAcceleration - xzVelocity;
         

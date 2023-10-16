@@ -121,7 +121,6 @@ public partial class Player : CharacterBody3D
     {
         base._Process(delta);
         Regen(delta);
-        GD.Print(_health);
     }
 
     public override void _PhysicsProcess(double delta)
