@@ -30,6 +30,7 @@ floor_stop_on_slope = false
 script = ExtResource("1_uqiw6")
 _pivot = NodePath("Pivot")
 _camera = NodePath("Pivot/Camera3D")
+_maxSpeed = 5.3
 _pancake = ExtResource("2_ts3vl")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]

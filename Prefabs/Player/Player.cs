@@ -13,7 +13,8 @@ public partial class Player : CharacterBody3D
     [Export] private Node3D _pivot;
     [Export] private Main _menu;
     [Export] private Camera3D _camera;
-    [Export] private double _speed = 5.0f;
+    [Export] private double _maxSpeed = 5.0f;
+    [Export] private double _acceleration = 4.5f;
     [Export] private double _jumpVelocity = 4.5f;
     [Export] private double _airbornePenalty = 4.5f;
     [Export] private Node3D _throwingEnv;
@@ -122,9 +123,9 @@ public partial class Player : CharacterBody3D
         if (Input.IsActionJustPressed("jump") && IsOnFloor())
             Velocity += Vector3.Up * (float)_jumpVelocity;
 
+        var isSprinting = Input.IsActionPressed("sprint");
         
         var inputDir = Input.GetVector("Strf L", "Strf R", "fwd", "bwd");
-        var isSprinting = Input.IsActionPressed("sprint");
         var direction = (Transform.Basis * new Vector3(inputDir.X, 0, inputDir.Y)).Normalized();
 
         var floor = _floorDetector.GetCollider();
@@ -132,26 +133,23 @@ public partial class Player : CharacterBody3D
         if (floor is not null) 
             floorFriction = floor.GetMeta("frictionFactor", 10).AsDouble();
 
-        var movementDelta = delta * _speed * floorFriction;
-        if (!direction.IsZeroApprox())
-        {
-            var speed = (float)(isSprinting ? _speed * 2 : _speed);
+        var xzMask = new Vector3(1, 0, 1);
+        var xzVelocity = Velocity * xzMask;
 
-            Velocity = Velocity with
-            {
-                X = Mathf.MoveToward(Velocity.X, direction.X * speed, (float)(IsOnFloor() ? movementDelta : movementDelta /_airbornePenalty)),
-                Z = Mathf.MoveToward(Velocity.Z, direction.Z * speed, (float)(IsOnFloor() ? movementDelta : movementDelta / _airbornePenalty))
-            };
-        }
-        else
-        {
-            Velocity = Velocity with
-            {
-                X = Mathf.MoveToward(Velocity.X, 0, (float)(IsOnFloor() ? movementDelta : 0)),
-                Z = Mathf.MoveToward(Velocity.Z, 0,  (float)(IsOnFloor() ? movementDelta : 0))
-            };
-        }
+        var maxSpeed = (float)_maxSpeed;
+        var acceleration = _acceleration;
 
+        if (isSprinting)
+        {
+            maxSpeed *= 2;
+            acceleration *= 2;
+        }
+        
+        var movementAcceleration = xzVelocity.MoveToward(
+            direction.Normalized() * xzMask * maxSpeed, 
+            (float)(delta * acceleration * floorFriction));
+        
+        Velocity += movementAcceleration - xzVelocity;
 
         MoveAndSlide();
     }
