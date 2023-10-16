@@ -16,10 +16,7 @@ public partial class Main : Node2D
         switch (@event)
         {
             case InputEventKey eventKey when eventKey.IsActionPressed("Menu"):
-                if (GetTree().Paused)
-                {
-                    Close();
-                }
+                Close();
                 break;
         }
     }

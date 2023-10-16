@@ -13,6 +13,13 @@ public partial class Bullet: RigidBody3D
     public Bullet(Vector3 force)
     {
         LinearVelocity = force;
+        Basis = Basis.Identity with
+        {
+            X = force.Rotated(Vector3.Up, (float)(Math.Tau/4)).Normalized() / 8,
+            Y = force.Normalized() / 8,
+            Z = force.Rotated(Vector3.Right, (float)(Math.Tau/4)).Normalized() / 8
+        };
+        
         GravityScale = 0;
     }
 
@@ -24,19 +31,18 @@ public partial class Bullet: RigidBody3D
 
         _collider = new CollisionShape3D();
         var colliderShape = new CylinderShape3D();
+        colliderShape.Radius = .03f;
+        colliderShape.Height = .07f;
         _collider.Shape = colliderShape;
-        _collider.Basis = Basis.Identity with
-        {
-            X = LinearVelocity.Rotated(Vector3.Up, (float)(Math.Tau/4)).Normalized() / 8,
-            Y = LinearVelocity.Normalized()/2,
-            Z = LinearVelocity.Rotated(Vector3.Right, (float)(Math.Tau/4)).Normalized()
-        };
+        
         AddChild(_collider);
             
         _shape = new CsgCylinder3D();
         var bulletMaterial = new StandardMaterial3D();
         bulletMaterial.AlbedoColor = Colors.Black;
         _shape.Material = bulletMaterial;
+        _shape.Radius = .03f;
+        _shape.Height = .07f;
         _collider.AddChild(_shape);
     }
 

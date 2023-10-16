@@ -63,11 +63,6 @@ public partial class Ennemy: CharacterBody3D
 
     public override void _PhysicsProcess(double delta)
     {
-        if (Input.MouseMode == Input.MouseModeEnum.Visible)
-        {
-            return;
-        }
-        
         Velocity += Vector3.Down * (float)Gravity * (float)delta;
 
         if (NavigationAgent.IsNavigationFinished())
