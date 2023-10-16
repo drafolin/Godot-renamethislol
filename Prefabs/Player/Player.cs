@@ -121,6 +121,7 @@ public partial class Player : CharacterBody3D
     {
         base._Process(delta);
         Regen(delta);
+        GD.Print(_health);
     }
 
     public override void _PhysicsProcess(double delta)
@@ -250,7 +251,7 @@ public partial class Player : CharacterBody3D
     private void Regen(double delta)
     {
         if (_currentRegenCooldown > 0)
-            _regenCooldown -= delta;
+            _currentRegenCooldown -= delta;
         else if (_health < _maxHealth)
             _health += _regeneration * delta;
         UpdateHealthBar();

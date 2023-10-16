@@ -50,6 +50,7 @@ process_material = SubResource("ParticleProcessMaterial_etv3q")
 draw_pass_1 = SubResource("CapsuleMesh_3qvko")
 
 [node name="Camera3D" type="Camera3D" parent="Pivot"]
+current = true
 
 [node name="RayCast3D" type="RayCast3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)

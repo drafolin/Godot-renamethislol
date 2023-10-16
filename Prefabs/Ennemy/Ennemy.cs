@@ -10,18 +10,17 @@ public partial class Ennemy: CharacterBody3D
     internal struct Runnable
     {
         public Action Callback { get; }
-        private double _timeLeft;
-        public double CountDown => _timeLeft;
+        public double CountDown { get; private set; }
 
         public Runnable(double time, Action action)
         {
             Callback = action;
-            _timeLeft = time;
+            CountDown = time;
         }
 
         public void Decrement(double delta)
         {
-            _timeLeft -= delta;
+            CountDown -= delta;
         }
     }
 

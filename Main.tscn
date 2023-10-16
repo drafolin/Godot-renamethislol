@@ -381,6 +381,7 @@ _menu = NodePath("../UI/Menu")
 _throwingEnv = NodePath("../world/Throwables")
 _healthBar = NodePath("../UI/HUD/HealthBar")
 _overlay = NodePath("../UI/HUD/SubViewport/Overlay")
+_regeneration = 4.0
 
 [node name="UI" type="Node2D" parent="."]
 
