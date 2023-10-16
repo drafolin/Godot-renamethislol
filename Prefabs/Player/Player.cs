@@ -26,6 +26,8 @@ public partial class Player : CharacterBody3D
     [Export] private ShapeCast3D _meleeHitBox;
     [Export] private double _maxHealth = 50;
     [Export] private double _regeneration = .1;
+    [Export] private double _regenCooldown = 5;
+    private double _currentRegenCooldown;
     private double _health;
     private RayCast3D _floorDetector;
     private Animation _overlayAnimation;
@@ -118,7 +120,7 @@ public partial class Player : CharacterBody3D
     public override void _Process(double delta)
     {
         base._Process(delta);
-        Regen();
+        Regen(delta);
     }
 
     public override void _PhysicsProcess(double delta)
@@ -236,6 +238,7 @@ public partial class Player : CharacterBody3D
     public void Damage(float dmg)
     {
         _health -= dmg;
+        _currentRegenCooldown = _regenCooldown;
         UpdateHealthBar();
         
         if (_health < 0)
@@ -244,10 +247,12 @@ public partial class Player : CharacterBody3D
         }
     }
 
-    private void Regen()
+    private void Regen(double delta)
     {
-        if (_health < _maxHealth)
-            _health += _regeneration;
+        if (_currentRegenCooldown > 0)
+            _regenCooldown -= delta;
+        else if (_health < _maxHealth)
+            _health += _regeneration * delta;
         UpdateHealthBar();
     }
 
