@@ -19,6 +19,7 @@ public partial class Player : CharacterBody3D
     [Export] private double _airbornePenalty = 4.5f;
     [Export] private Node3D _throwingEnv;
     [Export] private PackedScene _pancake;
+    [Export] private Node2D _healthBar;
     [Export] private double _gunDamage = 1;
     [Export] private Node3D _overlay;
     [Export] private float _meleeDamage = 1;
@@ -28,6 +29,7 @@ public partial class Player : CharacterBody3D
     private double _health;
     private RayCast3D _floorDetector;
     private Animation _overlayAnimation;
+    private Sprite2D _healthBarFill;
 
     private float _rotationX;
     private float _rotationY;
@@ -41,6 +43,7 @@ public partial class Player : CharacterBody3D
         _bullet = GetNode<GpuParticles3D>("Pivot/GPUParticles3D");
         _overlayAnimation = _overlay.GetNode<Animation>("Overlay");
         _meleeHitBox ??= GetNode<ShapeCast3D>("MeleeHitBox");
+        _healthBarFill ??= _healthBar.GetNode<Sprite2D>("HealthFill");
         _health = _maxHealth;
     }
 
@@ -115,9 +118,7 @@ public partial class Player : CharacterBody3D
     public override void _Process(double delta)
     {
         base._Process(delta);
-        GD.Print("Health:" + _health);
-        if (_health < _maxHealth)
-            _health += _regeneration;
+        Regen();
     }
 
     public override void _PhysicsProcess(double delta)
@@ -235,9 +236,42 @@ public partial class Player : CharacterBody3D
     public void Damage(float dmg)
     {
         _health -= dmg;
+        UpdateHealthBar();
+        
         if (_health < 0)
         {
             GetTree().Quit();
+        }
+    }
+
+    private void Regen()
+    {
+        if (_health < _maxHealth)
+            _health += _regeneration;
+        UpdateHealthBar();
+    }
+
+    private void UpdateHealthBar()
+    {
+        _healthBarFill.RegionRect = _healthBarFill.RegionRect with
+        {
+            Size = _healthBarFill.RegionRect.Size with
+            {
+                X = (float)_health
+            }
+        };
+
+        if (_health < 10)
+        {
+            var texture = (GradientTexture1D)_healthBarFill.Texture;
+            texture.Gradient.SetColor(0, Colors.Red);
+            texture.Gradient.SetColor(1, Colors.Red);
+        }
+        else
+        {
+            var texture = (GradientTexture1D)_healthBarFill.Texture;
+            texture.Gradient.SetColor(0, Colors.White);
+            texture.Gradient.SetColor(1, Colors.White);
         }
     }
 }

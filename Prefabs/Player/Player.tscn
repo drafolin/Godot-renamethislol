@@ -24,7 +24,7 @@ height = 0.5
 [sub_resource type="BoxShape3D" id="BoxShape3D_1eisx"]
 size = Vector3(2, 1, 2)
 
-[node name="player" type="CharacterBody3D" node_paths=PackedStringArray("_pivot", "_camera")]
+[node name="player" type="CharacterBody3D" node_paths=PackedStringArray("_pivot", "_camera", "_meleeHitBox")]
 input_ray_pickable = false
 floor_stop_on_slope = false
 script = ExtResource("1_uqiw6")
@@ -32,6 +32,7 @@ _pivot = NodePath("Pivot")
 _camera = NodePath("Pivot/Camera3D")
 _maxSpeed = 5.3
 _pancake = ExtResource("2_ts3vl")
+_meleeHitBox = NodePath("MeleeHitBox")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_u2yoo")

@@ -51,7 +51,7 @@ material = SubResource("StandardMaterial3D_dysiy")
 path_max_distance = 20.01
 avoidance_enabled = true
 radius = 1.0
-max_speed = 5.0
+max_speed = 0.5
 
 [node name="HealthBar" type="SubViewport" parent="."]
 transparent_bg = true
