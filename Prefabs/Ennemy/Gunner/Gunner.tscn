@@ -8,6 +8,8 @@ viewport_path = NodePath("HealthBar")
 
 [node name="Gunner" instance=ExtResource("1_5pp5g")]
 script = ExtResource("2_plwaf")
+BulletSpeed = 15.0
+DamageValue = 5.0
 
 [node name="Sprite3D" parent="." index="4"]
 texture = SubResource("ViewportTexture_qpq48")

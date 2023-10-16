@@ -30,7 +30,7 @@ albedo_color = Color(0.572549, 0.211765, 0.752941, 1)
 [sub_resource type="BoxShape3D" id="BoxShape3D_v1hym"]
 size = Vector3(40, 10, 1)
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_baso4"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_ulchl"]
 viewport_path = NodePath("UI/HUD/SubViewport")
 
 [sub_resource type="Gradient" id="Gradient_7o0ds"]
@@ -47,6 +47,7 @@ font_size = 45
 default_font_size = 44
 
 [node name="Node3D" type="Node3D"]
+process_mode = 1
 
 [node name="env" type="Node3D" parent="."]
 
@@ -402,7 +403,7 @@ transparent_bg = true
 [node name="Sprite2D2" type="Sprite2D" parent="UI/HUD"]
 position = Vector2(252, 1)
 scale = Vector2(1.26563, 1.26172)
-texture = SubResource("ViewportTexture_baso4")
+texture = SubResource("ViewportTexture_ulchl")
 
 [node name="Control" type="Control" parent="UI/HUD"]
 layout_mode = 3
@@ -441,9 +442,11 @@ position = Vector2(0, -285.78)
 scale = Vector2(0.75, 0.75)
 texture = ExtResource("7_1vxhc")
 
-[node name="Menu" type="Node2D" parent="UI"]
+[node name="Menu" type="Node2D" parent="UI" node_paths=PackedStringArray("_world")]
+process_mode = 2
 visible = false
 script = ExtResource("4_i7nxl")
+_world = NodePath("../../world")
 
 [node name="Control" type="Control" parent="UI/Menu"]
 layout_direction = 2

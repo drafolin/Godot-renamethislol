@@ -25,15 +25,15 @@ public partial class Bullet: RigidBody3D
         _collider = new CollisionShape3D();
         var colliderShape = new CylinderShape3D();
         _collider.Shape = colliderShape;
+        _collider.Basis = Basis.Identity with
+        {
+            X = LinearVelocity.Rotated(Vector3.Up, (float)(Math.Tau/4)).Normalized() / 8,
+            Y = LinearVelocity.Normalized()/2,
+            Z = LinearVelocity.Rotated(Vector3.Right, (float)(Math.Tau/4)).Normalized()
+        };
         AddChild(_collider);
             
         _shape = new CsgCylinder3D();
-        _shape.Basis = Basis.Identity with
-        {
-            X = LinearVelocity.Rotated(Vector3.Up, (float)(Math.Tau/4)).Normalized(),
-            Y = LinearVelocity.Normalized(),
-            Z = LinearVelocity.Rotated(Vector3.Right, (float)(Math.Tau/4)).Normalized()
-        };
         var bulletMaterial = new StandardMaterial3D();
         bulletMaterial.AlbedoColor = Colors.Black;
         _shape.Material = bulletMaterial;
@@ -51,12 +51,9 @@ public partial class Bullet: RigidBody3D
     {
         base._Process(delta);
         if (_lastCollision is null) return;
-
-        GD.Print("I just touched something!");
         
         if (_lastCollision.GetCollider() is Player.Player player)
         {
-            GD.Print("and it's a player!");
             player.Damage(Damage);
         }
         

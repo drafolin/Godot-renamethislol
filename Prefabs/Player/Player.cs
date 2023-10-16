@@ -95,16 +95,11 @@ public partial class Player : CharacterBody3D
                 _throwingEnv.AddChild(newBomb);
                 break;
             case InputEventKey eventKey when eventKey.IsActionPressed("ui_cancel"):
-                if(_menu.Get("visible").AsBool())
-                    _menu.Close();
-                else
-                    _menu.Open();
-                return;
+                _menu.Open();
+                break;
             case not null when @event.IsActionPressed("melee"):
                 Melee();
                 break;
-            case InputEventMouseButton when Input.MouseMode == Input.MouseModeEnum.Visible:
-                return;
             case InputEventMouseButton eventMb when eventMb.IsActionPressed("shoot") :
                 Shoot();
                 break;
@@ -125,11 +120,6 @@ public partial class Player : CharacterBody3D
 
     public override void _PhysicsProcess(double delta)
     {
-        if (Input.MouseMode == Input.MouseModeEnum.Visible)
-        {
-            return;
-        }
-        
         Velocity += Vector3.Down * _gravity * (float)delta;
         
         // Handle Jump.
@@ -241,7 +231,7 @@ public partial class Player : CharacterBody3D
         _currentRegenCooldown = _regenCooldown;
         UpdateHealthBar();
         
-        if (_health < 0)
+        if (_health <= 0)
         {
             GetTree().Quit();
         }

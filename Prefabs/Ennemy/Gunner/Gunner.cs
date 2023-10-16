@@ -5,6 +5,7 @@ namespace Test12.Prefabs.Ennemy.Gunner;
 
 public partial class Gunner : Ennemy
 {
+    [Export] protected double BulletSpeed = 15;
     private double _secondCounter;
     public override void _Process(double delta)
     {
@@ -18,7 +19,7 @@ public partial class Gunner : Ennemy
 
     private void Shoot()
     {
-        var bullet = new Bullet((Player.GlobalTransform.Origin - GlobalTransform.Origin).Normalized() * 3);
+        var bullet = new Bullet((Player.GlobalTransform.Origin - GlobalTransform.Origin).Normalized() * (float)BulletSpeed);
         bullet.Damage = DamageValue;
         AddChild(bullet);
     }
