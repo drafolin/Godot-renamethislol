@@ -170,6 +170,7 @@ public partial class Player : CharacterBody3D
         
         if (target is not Ennemy.Ennemy ennemy) return;
         ennemy.Damage((float)_gunDamage);
+        ennemy.Push((to - from).Normalized() * 10);
     }
 
     private void Aim(bool zIn = true)
