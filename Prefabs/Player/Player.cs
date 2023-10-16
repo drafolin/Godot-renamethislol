@@ -115,16 +115,12 @@ public partial class Player : CharacterBody3D
         {
             return;
         }
-
-        // Add the gravity.
-        if (!IsOnFloor())
-        {
-            Velocity = Velocity with { Y = Velocity.Y - _gravity * (float)delta };
-        }
-
+        
+        Velocity += Vector3.Down * _gravity * (float)delta;
+        
         // Handle Jump.
         if (Input.IsActionJustPressed("jump") && IsOnFloor())
-            Velocity = Velocity with { Y = (float)_jumpVelocity };
+            Velocity += Vector3.Up * (float)_jumpVelocity;
 
         
         var inputDir = Input.GetVector("Strf L", "Strf R", "fwd", "bwd");
@@ -189,13 +185,36 @@ public partial class Player : CharacterBody3D
     private void Melee()
     {
         if (_overlayAnimation.IsPlaying()) return;
-        _overlayAnimation.Play("melee");
-
-        for (int i = 0; i < _meleeHitBox.GetCollisionCount(); i++)
+        Ennemy.Ennemy firstEnemy = null;
+        
+        for (var i = 0; i < _meleeHitBox.GetCollisionCount(); i++)
         {
             var collided = _meleeHitBox.GetCollider(i);
-            if (collided is not Ennemy.Ennemy ennemy) return;
-            ennemy.Damage(_meleeDamage);
+            if (collided is not Ennemy.Ennemy enemy) continue;
+            firstEnemy ??= enemy;
+            enemy.Damage(_meleeDamage);
+            var toEnemyV = enemy.GlobalTransform.Origin - GlobalTransform.Origin; 
+            enemy.Push(toEnemyV * 9.8f + Vector3.Up * 9.8f);
+        }
+        
+        
+        if (firstEnemy is not null)
+        {
+            _overlayAnimation.Play("melee_hit");
+            var toFirstEnemyVector = GlobalTransform.Origin - firstEnemy.GlobalTransform.Origin; 
+            
+            GlobalTransform = GlobalTransform with
+            {
+                Basis = GlobalTransform.Basis with
+                {
+                    X = toFirstEnemyVector.Rotated(Vector3.Up, (float)Math.Tau / 4).Normalized(),
+                    Z = toFirstEnemyVector.Normalized()
+                }
+            };
+        }
+        else
+        {
+            _overlayAnimation.Play("melee");
         }
     }
 }
