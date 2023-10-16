@@ -193,7 +193,7 @@ public partial class Player : CharacterBody3D
             firstEnemy ??= enemy;
             enemy.Damage(_meleeDamage);
             var toEnemyV = enemy.GlobalTransform.Origin - GlobalTransform.Origin; 
-            enemy.Push(toEnemyV * 9.8f + Vector3.Up * 9.8f);
+            enemy.Push(toEnemyV * 2f + Vector3.Up * 2f);
         }
         
         
