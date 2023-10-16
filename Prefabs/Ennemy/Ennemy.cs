@@ -5,27 +5,26 @@ using Test12.Prefabs.Explosion;
 using CPlayer = Test12.Prefabs.Player.Player;
 
 namespace Test12.Prefabs.Ennemy;
-
-internal struct Runnable
-{
-    public Action Callback { get; }
-    private double _timeLeft;
-    public double CountDown => _timeLeft;
-
-    public Runnable(double time, Action action)
-    {
-        Callback = action;
-        _timeLeft = time;
-    }
-
-    public void Decrement(double delta)
-    {
-        _timeLeft -= delta;
-    }
-}
-
 public partial class Ennemy: CharacterBody3D
 {
+    internal struct Runnable
+    {
+        public Action Callback { get; }
+        private double _timeLeft;
+        public double CountDown => _timeLeft;
+
+        public Runnable(double time, Action action)
+        {
+            Callback = action;
+            _timeLeft = time;
+        }
+
+        public void Decrement(double delta)
+        {
+            _timeLeft -= delta;
+        }
+    }
+
     [Export] public CPlayer Player;
     [Export] private Sprite3D _hpBar;
     
