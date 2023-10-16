@@ -1,7 +1,8 @@
-[gd_scene load_steps=21 format=3 uid="uid://c1fwbbtxpgl3v"]
+[gd_scene load_steps=22 format=3 uid="uid://c1fwbbtxpgl3v"]
 
 [ext_resource type="Texture2D" uid="uid://dh1jqp0gtqbjg" path="res://assets/hdris/kloofendal_48d_partly_cloudy_puresky_2k.hdr" id="1_gyip7"]
 [ext_resource type="Script" path="res://Scripts/Ennemies/Collection.cs" id="2_lff03"]
+[ext_resource type="PackedScene" uid="uid://bt0b3mnccx6" path="res://Prefabs/Ennemy/RayMan/RayMan.tscn" id="3_5xl24"]
 [ext_resource type="Script" path="res://Scripts/UI/Menu/Main.cs" id="4_i7nxl"]
 [ext_resource type="PackedScene" uid="uid://bcwg1214mnrs0" path="res://Prefabs/Ennemy/Gunner/Gunner.tscn" id="4_tvd3t"]
 [ext_resource type="PackedScene" uid="uid://dampcyombgepl" path="res://Prefabs/Player/Player.tscn" id="5_qxv26"]
@@ -371,7 +372,7 @@ shape = SubResource("BoxShape3D_v1hym")
 unique_name_in_owner = true
 script = ExtResource("2_lff03")
 _player = NodePath("../../player")
-_enemyPrefabs = Array[PackedScene]([ExtResource("4_tvd3t")])
+_enemyPrefabs = Array[PackedScene]([ExtResource("4_tvd3t"), ExtResource("3_5xl24")])
 _hudPrompt = NodePath("../../UI/HUD/Control/Label")
 
 [node name="Throwables" type="Node3D" parent="world"]
