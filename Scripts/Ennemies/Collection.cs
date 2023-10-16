@@ -35,7 +35,7 @@ public partial class Collection : Node3D
 		if (_secondCounter > new Random().NextDouble() * 10/ (_totalTime * .2))
 		{
 			_secondCounter = 0;
-			if(GetChildren().Count <0)
+			if(GetChildren().Count < 50)
 				Spawn();
 		}
 
