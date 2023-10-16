@@ -2,24 +2,36 @@ using Godot;
 
 namespace Test12.Scripts.UI.Menu;
 
-public partial class Main : Node
+public partial class Main : Node2D
 {
     [Export] private Node3D _world;
+    
     public override void _Ready()
     {
-        Set("visible", false);
+        Visible = false;
     }
 
+    public override void _Input(InputEvent @event)
+    {
+        switch (@event)
+        {
+            case InputEventKey eventKey when eventKey.IsActionPressed("Menu"):
+                Close();
+                break;
+        }
+    }
 
     public void Close()
     {
-        Set("visible", false);
+        Visible = false;
         Input.MouseMode = Input.MouseModeEnum.Captured;
+        GetTree().Paused = false;
     }
 
     public void Open()
     {
-        Set("visible", true);
+        Visible = true;
         Input.MouseMode = Input.MouseModeEnum.Visible;
+        GetTree().Paused = true;
     }
 }

@@ -84,7 +84,7 @@ public partial class Player : CharacterBody3D
                 
                 break;
             }
-            case InputEventKey eventKey when eventKey.IsActionPressed("bomb"):
+            case var _ when @event.IsActionPressed("bomb"):
                 var newBomb = _pancake.Instantiate<Pancake>();
                 newBomb.LinearVelocity = _pivot.GlobalTransform.Basis.Z * -12;
                 newBomb.Transform = newBomb.Transform with
@@ -95,16 +95,11 @@ public partial class Player : CharacterBody3D
                 _throwingEnv.AddChild(newBomb);
                 break;
             case InputEventKey eventKey when eventKey.IsActionPressed("ui_cancel"):
-                if(_menu.Get("visible").AsBool())
-                    _menu.Close();
-                else
-                    _menu.Open();
-                return;
+                _menu.Open();
+                break;
             case not null when @event.IsActionPressed("melee"):
                 Melee();
                 break;
-            case InputEventMouseButton when Input.MouseMode == Input.MouseModeEnum.Visible:
-                return;
             case InputEventMouseButton eventMb when eventMb.IsActionPressed("shoot") :
                 Shoot();
                 break;
@@ -121,16 +116,10 @@ public partial class Player : CharacterBody3D
     {
         base._Process(delta);
         Regen(delta);
-        GD.Print(_health);
     }
 
     public override void _PhysicsProcess(double delta)
     {
-        if (Input.MouseMode == Input.MouseModeEnum.Visible)
-        {
-            return;
-        }
-        
         Velocity += Vector3.Down * _gravity * (float)delta;
         
         // Handle Jump.
@@ -242,7 +231,7 @@ public partial class Player : CharacterBody3D
         _currentRegenCooldown = _regenCooldown;
         UpdateHealthBar();
         
-        if (_health < 0)
+        if (_health <= 0)
         {
             GetTree().Quit();
         }

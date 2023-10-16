@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://bt0b3mnccx6"]
+
+[ext_resource type="PackedScene" uid="uid://dyv4kqeogdfeb" path="res://Prefabs/Ennemy/Base.tscn" id="1_q8jbx"]
+[ext_resource type="Script" path="res://Prefabs/Ennemy/RayMan/RayMan.cs" id="2_8j66a"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_dwbha"]
+viewport_path = NodePath("HealthBar")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r0tl1"]
+albedo_color = Color(1, 0, 0, 1)
+
+[node name="RayMan" node_paths=PackedStringArray("PlayerRay", "VisibleRay") instance=ExtResource("1_q8jbx")]
+script = ExtResource("2_8j66a")
+PlayerRay = NodePath("PlayerRay")
+VisibleRay = NodePath("PlayerRay/VisibleRay")
+DamageValue = 0.1
+
+[node name="Sprite3D" parent="." index="4"]
+texture = SubResource("ViewportTexture_dwbha")
+
+[node name="PlayerRay" type="RayCast3D" parent="." index="6"]
+
+[node name="VisibleRay" type="CSGCylinder3D" parent="PlayerRay" index="0"]
+radius = 0.05
+material = SubResource("StandardMaterial3D_r0tl1")

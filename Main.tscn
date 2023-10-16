@@ -1,9 +1,10 @@
-[gd_scene load_steps=21 format=3 uid="uid://c1fwbbtxpgl3v"]
+[gd_scene load_steps=22 format=3 uid="uid://c1fwbbtxpgl3v"]
 
 [ext_resource type="Texture2D" uid="uid://dh1jqp0gtqbjg" path="res://assets/hdris/kloofendal_48d_partly_cloudy_puresky_2k.hdr" id="1_gyip7"]
 [ext_resource type="Script" path="res://Scripts/Ennemies/Collection.cs" id="2_lff03"]
-[ext_resource type="PackedScene" uid="uid://bt0b3mnccx6" path="res://Prefabs/Ennemy/Ennemy.tscn" id="3_ynwm1"]
+[ext_resource type="PackedScene" uid="uid://bt0b3mnccx6" path="res://Prefabs/Ennemy/RayMan/RayMan.tscn" id="3_5xl24"]
 [ext_resource type="Script" path="res://Scripts/UI/Menu/Main.cs" id="4_i7nxl"]
+[ext_resource type="PackedScene" uid="uid://bcwg1214mnrs0" path="res://Prefabs/Ennemy/Gunner/Gunner.tscn" id="4_tvd3t"]
 [ext_resource type="PackedScene" uid="uid://dampcyombgepl" path="res://Prefabs/Player/Player.tscn" id="5_qxv26"]
 [ext_resource type="Script" path="res://Scripts/UI/Menu/Resume.cs" id="5_vrmjn"]
 [ext_resource type="Texture2D" uid="uid://c66sv2tdddpt8" path="res://assets/textures/crosshair.png" id="6_gu0s3"]
@@ -30,7 +31,7 @@ albedo_color = Color(0.572549, 0.211765, 0.752941, 1)
 [sub_resource type="BoxShape3D" id="BoxShape3D_v1hym"]
 size = Vector3(40, 10, 1)
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_baso4"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_ulchl"]
 viewport_path = NodePath("UI/HUD/SubViewport")
 
 [sub_resource type="Gradient" id="Gradient_7o0ds"]
@@ -47,6 +48,7 @@ font_size = 45
 default_font_size = 44
 
 [node name="Node3D" type="Node3D"]
+process_mode = 1
 
 [node name="env" type="Node3D" parent="."]
 
@@ -370,7 +372,7 @@ shape = SubResource("BoxShape3D_v1hym")
 unique_name_in_owner = true
 script = ExtResource("2_lff03")
 _player = NodePath("../../player")
-_enemyPrefab = ExtResource("3_ynwm1")
+_enemyPrefabs = Array[PackedScene]([ExtResource("4_tvd3t"), ExtResource("3_5xl24")])
 _hudPrompt = NodePath("../../UI/HUD/Control/Label")
 
 [node name="Throwables" type="Node3D" parent="world"]
@@ -402,7 +404,7 @@ transparent_bg = true
 [node name="Sprite2D2" type="Sprite2D" parent="UI/HUD"]
 position = Vector2(252, 1)
 scale = Vector2(1.26563, 1.26172)
-texture = SubResource("ViewportTexture_baso4")
+texture = SubResource("ViewportTexture_ulchl")
 
 [node name="Control" type="Control" parent="UI/HUD"]
 layout_mode = 3
@@ -441,9 +443,11 @@ position = Vector2(0, -285.78)
 scale = Vector2(0.75, 0.75)
 texture = ExtResource("7_1vxhc")
 
-[node name="Menu" type="Node2D" parent="UI"]
+[node name="Menu" type="Node2D" parent="UI" node_paths=PackedStringArray("_world")]
+process_mode = 2
 visible = false
 script = ExtResource("4_i7nxl")
+_world = NodePath("../../world")
 
 [node name="Control" type="Control" parent="UI/Menu"]
 layout_direction = 2
