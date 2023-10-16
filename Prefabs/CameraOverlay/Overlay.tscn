@@ -1,60 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://csswmcwuo7qlt"]
+[gd_scene load_steps=7 format=3 uid="uid://csswmcwuo7qlt"]
 
 [ext_resource type="PackedScene" uid="uid://dyrshiwf6ooqt" path="res://Prefabs/CameraOverlay/assets/models/karambit/scene.gltf" id="1_egp0x"]
 [ext_resource type="Script" path="res://Prefabs/CameraOverlay/Animation.cs" id="2_6f6ma"]
-
-[sub_resource type="Animation" id="Animation_51klv"]
-resource_name = "melee"
-length = 0.4
-step = 0.05
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:position")
-tracks/0/interp = 2
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0.05, 0.2, 0.35),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Vector3(0.0959557, -0.153846, 0.0260848), Vector3(0.157532, -0.153846, -0.095321), Vector3(0.324982, -0.153846, -0.0586933)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:rotation")
-tracks/1/interp = 2
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0.05, 0.2, 0.35),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Vector3(0.135472, 1.26259, 1.56556), Vector3(0.135472, 0.229354, 1.56556), Vector3(0.135472, -0.915129, 1.56556)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("../CSGCylinder3D:position")
-tracks/2/interp = 2
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.05, 0.35, 0.4),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 0,
-"values": [Vector3(0.215721, -0.225001, -0.0564355), Vector3(0.215721, -0.370846, 0.0801353), Vector3(0.215721, -0.370846, 0.0801353), Vector3(0.215721, -0.225001, -0.0564355)]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("../CSGCylinder3D:rotation")
-tracks/3/interp = 2
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.05, 0.35, 0.4),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 0,
-"values": [Vector3(-1.08464, -0.567489, 0.733584), Vector3(-1.2599, -2.17849, 2.42209), Vector3(-1.2599, -2.17849, 2.42209), Vector3(-1.08464, -0.567489, 0.733584)]
-}
 
 [sub_resource type="Animation" id="Animation_ecbew"]
 length = 0.001
@@ -73,50 +20,157 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath(".:rotation")
+tracks/1/path = NodePath("../CSGCylinder3D:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector3(0.135472, 1.26259, 1.56556)]
+"values": [Vector3(0.215721, -0.225001, -0.0564355)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("../CSGCylinder3D:position")
+tracks/2/path = NodePath("../CSGCylinder3D:rotation")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector3(0.215721, -0.225001, -0.0564355)]
+"values": [Vector3(-1.08464, -0.567489, 0.733584)]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("../CSGCylinder3D:rotation")
+tracks/3/path = NodePath(".:basis")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Basis(0.000134398, -0.00014362, 0.000980464, 0.000990824, 5.18835e-06, -0.000135058, 1.431e-05, 0.000989619, 0.000142999)]
+}
+
+[sub_resource type="Animation" id="Animation_51klv"]
+resource_name = "melee"
+length = 0.5
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.1, 0.25, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector3(-1.08464, -0.567489, 0.733584)]
+"values": [Vector3(0.0959557, -0.153846, 0.0260848), Vector3(0.157532, -0.153846, -0.095321), Vector3(0.324982, -0.153846, -0.0586933)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:rotation")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.1, 0.25, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0.135472, 1.26259, 1.56556), Vector3(0.135472, 0.229354, 1.56556), Vector3(0.135472, -0.915129, 1.56556)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../CSGCylinder3D:position")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0.215721, -0.225001, -0.0564355), Vector3(0.215721, -0.370846, 0.0801353), Vector3(0.215721, -0.370846, 0.0801353), Vector3(0.215721, -0.225001, -0.0564355)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../CSGCylinder3D:rotation")
+tracks/3/interp = 2
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(-1.08464, -0.567489, 0.733584), Vector3(-1.2599, -2.17849, 2.42209), Vector3(-1.2599, -2.17849, 2.42209), Vector3(-1.08464, -0.567489, 0.733584)]
+}
+
+[sub_resource type="Animation" id="Animation_t2yca"]
+resource_name = "melee_hit"
+length = 0.5
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.1, 0.15, 0.2, 0.25, 0.35, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0.0959557, -0.153846, 0.0260848), Vector3(0.0970536, -0.144877, -0.039722), Vector3(0.0854196, -0.131284, -0.104046), Vector3(0.16961, -0.123577, -0.138007), Vector3(0.0944419, -0.153846, -0.0378266), Vector3(0.0944419, -0.274447, -0.0378266)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../CSGCylinder3D:position")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0.215721, -0.225001, -0.0564355), Vector3(0.215721, -0.370846, 0.0801353), Vector3(0.215721, -0.370846, 0.0801353), Vector3(0.215721, -0.225001, -0.0564355)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../CSGCylinder3D:rotation")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(-1.08464, -0.567489, 0.733584), Vector3(-1.2599, -2.17849, 2.42209), Vector3(-1.2599, -2.17849, 2.42209), Vector3(-1.08464, -0.567489, 0.733584)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:basis")
+tracks/3/interp = 2
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.1, 0.25, 0.35, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Basis(0.000134398, -0.00014362, 0.000980464, 0.000990824, 5.18835e-06, -0.000135058, 1.431e-05, 0.000989619, 0.000142999), Basis(-2.81252e-05, -0.000978194, 0.000205777, 0.000969335, -7.69655e-05, -0.000233382, 0.000244131, 0.000192903, 0.000950362), Basis(0.000113168, -0.000578184, 0.000808019, 0.000990824, 5.18835e-06, -0.000135058, 7.38961e-05, 0.000815889, 0.000573465), Basis(-0.000444123, -0.000487943, 0.000751442, 0.000789271, -0.000609998, 7.03833e-05, 0.000424036, 0.00062435, 0.000656033)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_0v7aw"]
 _data = {
 "RESET": SubResource("Animation_ecbew"),
-"melee": SubResource("Animation_51klv")
+"melee": SubResource("Animation_51klv"),
+"melee_hit": SubResource("Animation_t2yca")
 }
 
 [node name="Overlay" type="Node3D"]
 
 [node name="CSGCylinder3D" type="CSGCylinder3D" parent="."]
-transform = Transform3D(0.94454, -0.211592, -0.251143, 0.312827, 0.347049, 0.884136, -0.099917, -0.913667, 0.393993, 0.215721, -0.225001, -0.0564355)
+transform = Transform3D(0.94454, -0.211592, -0.251144, 0.312828, 0.34705, 0.884135, -0.0999165, -0.913667, 0.393994, 0.215721, -0.225001, -0.0564355)
 layers = 524288
 radius = 0.0458793
 height = 0.539536
@@ -126,11 +180,12 @@ height = 0.539536
 [node name="OmniLight3D" type="OmniLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.19317, 0.242667, -0.556842)
 
-[node name="scene" parent="." instance=ExtResource("1_egp0x")]
-transform = Transform3D(0.000130281, -0.000302673, 0.000944148, 0.000990824, 5.18799e-06, -0.000135058, 3.59804e-05, 0.00095308, 0.000300572, 0.0959557, -0.153846, 0.0260848)
+[node name="karambit" parent="." instance=ExtResource("1_egp0x")]
+transform = Transform3D(0.000134398, -0.00014362, 0.000980464, 0.000990824, 5.18835e-06, -0.000135058, 1.431e-05, 0.000989619, 0.000142999, 0.0959557, -0.153846, 0.0260848)
+rotation_edit_mode = 2
 
 [node name="Overlay" type="AnimationPlayer" parent="."]
-root_node = NodePath("../scene")
+root_node = NodePath("../karambit")
 libraries = {
 "": SubResource("AnimationLibrary_0v7aw")
 }

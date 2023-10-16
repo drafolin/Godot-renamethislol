@@ -13,7 +13,7 @@ public partial class Collection : Node3D
 
 	private double _secondCounter;
 	private double _totalTime;
-	private Random _randomGen = new Random();
+	private readonly Random _randomGen = new();
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -35,7 +35,7 @@ public partial class Collection : Node3D
 		if (_secondCounter > new Random().NextDouble() * 10/ (_totalTime * .2))
 		{
 			_secondCounter = 0;
-			if(GetChildren().Count <50)
+			if(GetChildren().Count < 50)
 				Spawn();
 		}
 
@@ -49,8 +49,7 @@ public partial class Collection : Node3D
 	{
 		var ennemy = _enemyPrefab.Instantiate<Ennemy>();
 		ennemy.Player = _player;
-		ennemy.Floor = GetNode<CsgBox3D>("%floor");
-		float x, z = 0f;
+		float x, z;
 		var playerX = _player.GlobalTransform.Origin.X;
 		var playerZ = _player.GlobalTransform.Origin.Z;
 		do

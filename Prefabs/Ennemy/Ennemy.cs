@@ -2,6 +2,7 @@
 using System.Linq;
 using Godot;
 using Test12.Prefabs.Explosion;
+using CPlayer = Test12.Prefabs.Player.Player;
 
 namespace Test12.Prefabs.Ennemy;
 
@@ -25,20 +26,25 @@ internal struct Runnable
 
 public partial class Ennemy: CharacterBody3D
 {
-    [Export] public Player.Player Player;
-    [Export] public CsgBox3D Floor;
+    [Export] public CPlayer Player;
     [Export] private Sprite3D _hpBar;
     
     // Get the gravity from the project settings to be synced with RigidBody nodes.
     [Export] private double _gravity = (double)ProjectSettings.GetSetting("physics/3d/default_gravity");
-    [Export] private double _speed = 5.3;
+    [Export] private double _acceleration = 4;
+    [Export] private double _maxSpeed = 5.3;
     [Export] private Particles _explosionParticles;
     [Export] private CollisionShape3D _collider;
     [Export] private double _maxHealth = 2;
-    private double _health;
+    [Export] private RayCast3D _floorDetector;
     [Export] private double _resistance = 1;
+    [Export] private RayCast3D _playerRay;
+    [Export] private float _damage = .05f;
+    [Export] private CsgCylinder3D _visibleRay;
+    private double _health;
     private NavigationAgent3D _navigationAgent;
     private Runnable[] _deferredActions = Array.Empty<Runnable>();
+    private Vector3 _previousSafeVelocity = Vector3.Zero;
 
     private Vector3 MovementTarget
     {
@@ -50,62 +56,52 @@ public partial class Ennemy: CharacterBody3D
     {
         _explosionParticles ??= GetNode<Particles>("GPUParticles3D");
         _explosionParticles.Player = Player;
-        _navigationAgent = GetNode<NavigationAgent3D>("NavigationAgent3D");
+        _navigationAgent ??= GetNode<NavigationAgent3D>("NavigationAgent3D");
+        _floorDetector ??= GetNode<RayCast3D>("FloorDetector");
+        _playerRay ??= GetNode<RayCast3D>("PlayerRay");
+        _visibleRay ??= _playerRay.GetNode<CsgCylinder3D>("Ray");
         _health = _maxHealth;
         Callable.From(ActorSetup).CallDeferred();
     }
 
     public override void _PhysicsProcess(double delta)
     {
-        base._PhysicsProcess(delta);
-        
         if (Input.MouseMode == Input.MouseModeEnum.Visible)
         {
             return;
         }
+        
+        Velocity += Vector3.Down * (float)_gravity * (float)delta;
 
         if (_navigationAgent.IsNavigationFinished())
         {
             return;
         }
 
-        Vector3 currentAgentPosition = GlobalTransform.Origin;
-        Vector3 nextPathPosition = _navigationAgent.GetNextPathPosition();
+        var floor = _floorDetector.GetCollider();
+        double floorFriction = 10;
+        if (floor is not null) 
+            floorFriction = floor.GetMeta("frictionFactor", 10).AsDouble();
         
+        var currentAgentPosition = GlobalTransform.Origin;
+        var nextPathPosition = _navigationAgent.GetNextPathPosition();
+        const float airBornePenalty = 1000f;
         
-        Vector3 newVelocity = (nextPathPosition - currentAgentPosition).Normalized();
-        newVelocity *= (float)_speed;
-
-        Velocity = newVelocity;
+        var xzMask = new Vector3(1, 0, 1);
+        var xzVelocity = Velocity * xzMask;       
+        var movementDirection = (nextPathPosition - currentAgentPosition).Normalized();
         
-        // Add the gravity.
-        if (!IsOnFloor())
-        {
-            Velocity = Velocity with
-            {
-                Y = Velocity.Y - (float)_gravity * (float)delta
-            };
-        }        
+        var movementAcceleration = xzVelocity.MoveToward(
+            movementDirection.Normalized() * xzMask * (float)_maxSpeed, 
+            (float)(delta * _acceleration * floorFriction));
         
-        var collision3D = MoveAndCollide(Velocity * (float)delta, maxCollisions:2);
-
-        if (collision3D is null) return;
+        Velocity += movementAcceleration - xzVelocity;
         
-        for (var i = 0; i < collision3D.GetCollisionCount(); i++)
-        {
-            if (collision3D.GetCollider(i) is Player.Player)
-            {
-                GetTree().Quit();
-                return;
-            } 
-            MoveAndSlide();
-        }
+        MoveAndSlide();
     }
 
     public override void _Process(double delta)
     {
-        base._Process(delta);
-
         for (var i = 0; i < _deferredActions.Length; i++)
         {
             _deferredActions[i].Decrement(delta);
@@ -128,6 +124,34 @@ public partial class Ennemy: CharacterBody3D
                 Z = toPlayerV.Normalized() * 0.082f
             }
         };
+
+        var relativePlayerPos = Player.GlobalTransform.Origin - GlobalTransform.Origin;
+        _playerRay.TargetPosition = relativePlayerPos;
+
+        _visibleRay.Transform = _visibleRay.Transform with
+        {
+            Origin = relativePlayerPos / 2
+        };
+
+        _visibleRay.GlobalTransform = _visibleRay.GlobalTransform with
+        {
+            Basis = _visibleRay.GlobalTransform.Basis with
+            {
+                X = relativePlayerPos.Rotated(Vector3.Up, (float)(Math.Tau/4)).Normalized(),
+                Y = relativePlayerPos,
+                Z = relativePlayerPos.Rotated(Vector3.Right, (float)(Math.Tau/4)).Normalized()
+            }
+        };
+        
+        if (_playerRay.IsColliding() && _playerRay.GetCollider() is CPlayer player)
+        {
+            player.Damage(_damage);
+            _visibleRay.Visible = true;
+        }
+        else
+        {
+            _visibleRay.Visible = false;
+        }
     }
 
     private async void ActorSetup()
@@ -141,8 +165,9 @@ public partial class Ennemy: CharacterBody3D
 
     private void _OnNavigationAgent3dVelocityComputed(Vector3 safeVelocity)
     {
-        Velocity = safeVelocity;
-        MoveAndSlide();
+        Velocity -= _previousSafeVelocity;
+        _previousSafeVelocity = safeVelocity;
+        Velocity += _previousSafeVelocity;
     }
 
     public void Damage(float dmg)
@@ -161,14 +186,20 @@ public partial class Ennemy: CharacterBody3D
         }
     }
 
-    public void Die()
+    private void Die()
     {
         _explosionParticles.Emitting = true;
         _collider.Visible = false;
         _collider.Disabled = true;
         _hpBar.Visible = false;
         _gravity = 0;
+        _playerRay.Enabled = false;
 
         _deferredActions = _deferredActions.Append(new Runnable(_explosionParticles.Lifetime, QueueFree)).ToArray();
+    }
+
+    public void Push(Vector3 force)
+    {
+        Velocity += force;
     }
 }

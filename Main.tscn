@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://c1fwbbtxpgl3v"]
+[gd_scene load_steps=21 format=3 uid="uid://c1fwbbtxpgl3v"]
 
 [ext_resource type="Texture2D" uid="uid://dh1jqp0gtqbjg" path="res://assets/hdris/kloofendal_48d_partly_cloudy_puresky_2k.hdr" id="1_gyip7"]
 [ext_resource type="Script" path="res://Scripts/Ennemies/Collection.cs" id="2_lff03"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://dampcyombgepl" path="res://Prefabs/Player/Player.tscn" id="5_qxv26"]
 [ext_resource type="Script" path="res://Scripts/UI/Menu/Resume.cs" id="5_vrmjn"]
 [ext_resource type="Texture2D" uid="uid://c66sv2tdddpt8" path="res://assets/textures/crosshair.png" id="6_gu0s3"]
+[ext_resource type="Texture2D" uid="uid://bgt1h0moubcjy" path="res://assets/textures/mt-healthbar.png" id="7_1vxhc"]
 [ext_resource type="PackedScene" uid="uid://csswmcwuo7qlt" path="res://Prefabs/CameraOverlay/Overlay.tscn" id="8_8pvrx"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_gqsxa"]
@@ -29,8 +30,15 @@ albedo_color = Color(0.572549, 0.211765, 0.752941, 1)
 [sub_resource type="BoxShape3D" id="BoxShape3D_v1hym"]
 size = Vector3(40, 10, 1)
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_80s6u"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_baso4"]
 viewport_path = NodePath("UI/HUD/SubViewport")
+
+[sub_resource type="Gradient" id="Gradient_7o0ds"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_62grv"]
+gradient = SubResource("Gradient_7o0ds")
+width = 1
 
 [sub_resource type="LabelSettings" id="LabelSettings_eiu5o"]
 font_size = 45
@@ -367,10 +375,11 @@ _hudPrompt = NodePath("../../UI/HUD/Control/Label")
 
 [node name="Throwables" type="Node3D" parent="world"]
 
-[node name="player" parent="." node_paths=PackedStringArray("_menu", "_throwingEnv", "_overlay") instance=ExtResource("5_qxv26")]
+[node name="player" parent="." node_paths=PackedStringArray("_menu", "_throwingEnv", "_healthBar", "_overlay") instance=ExtResource("5_qxv26")]
 transform = Transform3D(0.999999, -6.48191e-08, 0.00172787, 6.71894e-08, 1, -1.37422e-06, -0.00172787, 1.37434e-06, 0.999999, 0, 2, 2)
 _menu = NodePath("../UI/Menu")
 _throwingEnv = NodePath("../world/Throwables")
+_healthBar = NodePath("../UI/HUD/HealthBar")
 _overlay = NodePath("../UI/HUD/SubViewport/Overlay")
 
 [node name="UI" type="Node2D" parent="."]
@@ -392,7 +401,7 @@ transparent_bg = true
 [node name="Sprite2D2" type="Sprite2D" parent="UI/HUD"]
 position = Vector2(252, 1)
 scale = Vector2(1.26563, 1.26172)
-texture = SubResource("ViewportTexture_80s6u")
+texture = SubResource("ViewportTexture_baso4")
 
 [node name="Control" type="Control" parent="UI/HUD"]
 layout_mode = 3
@@ -408,13 +417,31 @@ anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -121.5
+offset_top = 66.995
 offset_right = 121.5
-offset_bottom = 52.0
+offset_bottom = 118.995
 grow_horizontal = 2
 text = "You survived for: XX:XX:XX
 Ennemies remaining: XXX"
 
+[node name="HealthBar" type="Node2D" parent="UI/HUD"]
+
+[node name="HealthFill" type="Sprite2D" parent="UI/HUD/HealthBar"]
+position = Vector2(0, -285.82)
+scale = Vector2(7.5, 0.375)
+texture = SubResource("GradientTexture1D_62grv")
+centered = false
+offset = Vector2(-25, -25)
+region_enabled = true
+region_rect = Rect2(0, 0, 50, 50)
+
+[node name="HealthBarMt" type="Sprite2D" parent="UI/HUD/HealthBar"]
+position = Vector2(0, -285.78)
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("7_1vxhc")
+
 [node name="Menu" type="Node2D" parent="UI"]
+visible = false
 script = ExtResource("4_i7nxl")
 
 [node name="Control" type="Control" parent="UI/Menu"]

@@ -13,22 +13,27 @@ public partial class Player : CharacterBody3D
     [Export] private Node3D _pivot;
     [Export] private Main _menu;
     [Export] private Camera3D _camera;
-    [Export] private double _speed = 5.0f;
+    [Export] private double _maxSpeed = 5.0f;
+    [Export] private double _acceleration = 4.5f;
     [Export] private double _jumpVelocity = 4.5f;
     [Export] private double _airbornePenalty = 4.5f;
     [Export] private Node3D _throwingEnv;
     [Export] private PackedScene _pancake;
+    [Export] private Node2D _healthBar;
     [Export] private double _gunDamage = 1;
     [Export] private Node3D _overlay;
     [Export] private float _meleeDamage = 1;
     [Export] private ShapeCast3D _meleeHitBox;
+    [Export] private double _maxHealth = 50;
+    [Export] private double _regeneration = .1;
+    private double _health;
     private RayCast3D _floorDetector;
     private Animation _overlayAnimation;
+    private Sprite2D _healthBarFill;
 
     private float _rotationX;
     private float _rotationY;
-
-
+    
     private GpuParticles3D _bullet;
 
     public override void _Ready()
@@ -38,6 +43,8 @@ public partial class Player : CharacterBody3D
         _bullet = GetNode<GpuParticles3D>("Pivot/GPUParticles3D");
         _overlayAnimation = _overlay.GetNode<Animation>("Overlay");
         _meleeHitBox ??= GetNode<ShapeCast3D>("MeleeHitBox");
+        _healthBarFill ??= _healthBar.GetNode<Sprite2D>("HealthFill");
+        _health = _maxHealth;
     }
 
     public override void _Input(InputEvent @event)
@@ -108,6 +115,11 @@ public partial class Player : CharacterBody3D
         }
     }
 
+    public override void _Process(double delta)
+    {
+        base._Process(delta);
+        Regen();
+    }
 
     public override void _PhysicsProcess(double delta)
     {
@@ -115,20 +127,16 @@ public partial class Player : CharacterBody3D
         {
             return;
         }
-
-        // Add the gravity.
-        if (!IsOnFloor())
-        {
-            Velocity = Velocity with { Y = Velocity.Y - _gravity * (float)delta };
-        }
-
+        
+        Velocity += Vector3.Down * _gravity * (float)delta;
+        
         // Handle Jump.
         if (Input.IsActionJustPressed("jump") && IsOnFloor())
-            Velocity = Velocity with { Y = (float)_jumpVelocity };
+            Velocity += Vector3.Up * (float)_jumpVelocity;
 
+        var isSprinting = Input.IsActionPressed("sprint");
         
         var inputDir = Input.GetVector("Strf L", "Strf R", "fwd", "bwd");
-        var isSprinting = Input.IsActionPressed("sprint");
         var direction = (Transform.Basis * new Vector3(inputDir.X, 0, inputDir.Y)).Normalized();
 
         var floor = _floorDetector.GetCollider();
@@ -136,26 +144,28 @@ public partial class Player : CharacterBody3D
         if (floor is not null) 
             floorFriction = floor.GetMeta("frictionFactor", 10).AsDouble();
 
-        var movementDelta = delta * _speed * floorFriction;
-        if (!direction.IsZeroApprox())
-        {
-            var speed = (float)(isSprinting ? _speed * 2 : _speed);
+        var xzMask = new Vector3(1, 0, 1);
+        var xzVelocity = Velocity * xzMask;
 
-            Velocity = Velocity with
-            {
-                X = Mathf.MoveToward(Velocity.X, direction.X * speed, (float)(IsOnFloor() ? movementDelta : movementDelta /_airbornePenalty)),
-                Z = Mathf.MoveToward(Velocity.Z, direction.Z * speed, (float)(IsOnFloor() ? movementDelta : movementDelta / _airbornePenalty))
-            };
-        }
-        else
+        var maxSpeed = (float)_maxSpeed;
+        var acceleration = _acceleration;
+
+        if (isSprinting)
         {
-            Velocity = Velocity with
-            {
-                X = Mathf.MoveToward(Velocity.X, 0, (float)(IsOnFloor() ? movementDelta : 0)),
-                Z = Mathf.MoveToward(Velocity.Z, 0,  (float)(IsOnFloor() ? movementDelta : 0))
-            };
+            maxSpeed *= 2;
+            acceleration *= 2;
         }
 
+        if (!IsOnFloor())
+        {
+            acceleration /= _airbornePenalty;
+        }
+        
+        var movementAcceleration = xzVelocity.MoveToward(
+            direction.Normalized() * xzMask * maxSpeed, 
+            (float)(delta * acceleration * floorFriction));
+        
+        Velocity += movementAcceleration - xzVelocity;
 
         MoveAndSlide();
     }
@@ -176,6 +186,7 @@ public partial class Player : CharacterBody3D
         
         if (target is not Ennemy.Ennemy ennemy) return;
         ennemy.Damage((float)_gunDamage);
+        ennemy.Push((to - from).Normalized() * 10);
     }
 
     private void Aim(bool zIn = true)
@@ -189,13 +200,78 @@ public partial class Player : CharacterBody3D
     private void Melee()
     {
         if (_overlayAnimation.IsPlaying()) return;
-        _overlayAnimation.Play("melee");
+        Ennemy.Ennemy firstEnemy = null;
 
-        for (int i = 0; i < _meleeHitBox.GetCollisionCount(); i++)
+        for (var i = 0; i < _meleeHitBox.GetCollisionCount(); i++)
         {
             var collided = _meleeHitBox.GetCollider(i);
-            if (collided is not Ennemy.Ennemy ennemy) return;
-            ennemy.Damage(_meleeDamage);
+            if (collided is not Ennemy.Ennemy enemy) continue;
+            firstEnemy ??= enemy;
+            enemy.Damage(_meleeDamage);
+            var toEnemyV = enemy.GlobalTransform.Origin - GlobalTransform.Origin;
+            enemy.Push(toEnemyV * 2f + Vector3.Up * 2f);
+        }
+
+
+        if (firstEnemy is not null)
+        {
+            _overlayAnimation.Play("melee_hit");
+            var toFirstEnemyVector = GlobalTransform.Origin - firstEnemy.GlobalTransform.Origin;
+
+            GlobalTransform = GlobalTransform with
+            {
+                Basis = GlobalTransform.Basis with
+                {
+                    X = toFirstEnemyVector.Rotated(Vector3.Up, (float)Math.Tau / 4).Normalized(),
+                    Z = toFirstEnemyVector.Normalized()
+                }
+            };
+        }
+        else
+        {
+            _overlayAnimation.Play("melee");
+        }
+    }
+
+    public void Damage(float dmg)
+    {
+        _health -= dmg;
+        UpdateHealthBar();
+        
+        if (_health < 0)
+        {
+            GetTree().Quit();
+        }
+    }
+
+    private void Regen()
+    {
+        if (_health < _maxHealth)
+            _health += _regeneration;
+        UpdateHealthBar();
+    }
+
+    private void UpdateHealthBar()
+    {
+        _healthBarFill.RegionRect = _healthBarFill.RegionRect with
+        {
+            Size = _healthBarFill.RegionRect.Size with
+            {
+                X = (float)_health
+            }
+        };
+
+        if (_health < 10)
+        {
+            var texture = (GradientTexture1D)_healthBarFill.Texture;
+            texture.Gradient.SetColor(0, Colors.Red);
+            texture.Gradient.SetColor(1, Colors.Red);
+        }
+        else
+        {
+            var texture = (GradientTexture1D)_healthBarFill.Texture;
+            texture.Gradient.SetColor(0, Colors.White);
+            texture.Gradient.SetColor(1, Colors.White);
         }
     }
 }
