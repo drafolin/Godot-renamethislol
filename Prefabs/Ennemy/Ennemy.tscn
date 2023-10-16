@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://bt0b3mnccx6"]
+[gd_scene load_steps=8 format=3 uid="uid://bt0b3mnccx6"]
 
 [ext_resource type="Script" path="res://Prefabs/Ennemy/Ennemy.cs" id="1_qw70g"]
 [ext_resource type="PackedScene" uid="uid://dh0sj0kqyk5tu" path="res://Prefabs/Explosion/Explosion.tscn" id="2_p6mll"]
@@ -12,12 +12,17 @@ albedo_color = Color(1, 0, 0, 1)
 [sub_resource type="ViewportTexture" id="ViewportTexture_hlqbw"]
 viewport_path = NodePath("HealthBar")
 
-[node name="Enemy1" type="CharacterBody3D" node_paths=PackedStringArray("_hpBar", "_explosionParticles", "_collider", "_floorDetector")]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7veie"]
+albedo_color = Color(1, 0, 0, 1)
+
+[node name="Enemy1" type="CharacterBody3D" node_paths=PackedStringArray("_hpBar", "_explosionParticles", "_collider", "_floorDetector", "_playerRay", "_visibleRay")]
 script = ExtResource("1_qw70g")
 _hpBar = NodePath("Sprite3D")
 _explosionParticles = NodePath("GPUParticles3D")
 _collider = NodePath("CollisionShape3D")
 _floorDetector = NodePath("FloorDetector")
+_playerRay = NodePath("PlayerRay")
+_visibleRay = NodePath("PlayerRay/Ray")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_ruwos")
@@ -65,5 +70,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
 target_position = Vector3(0, -0.3, 0)
 
 [node name="PlayerRay" type="RayCast3D" parent="."]
+
+[node name="Ray" type="CSGCylinder3D" parent="PlayerRay"]
+rotation_edit_mode = 2
+radius = 0.05
+height = 1.0
+material = SubResource("StandardMaterial3D_7veie")
 
 [connection signal="velocity_computed" from="NavigationAgent3D" to="." method="_OnNavigationAgent3dVelocityComputed"]

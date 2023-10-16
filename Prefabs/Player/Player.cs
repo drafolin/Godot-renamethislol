@@ -24,6 +24,7 @@ public partial class Player : CharacterBody3D
     [Export] private float _meleeDamage = 1;
     [Export] private ShapeCast3D _meleeHitBox;
     [Export] private double _maxHealth = 50;
+    [Export] private double _regeneration = .1;
     private double _health;
     private RayCast3D _floorDetector;
     private Animation _overlayAnimation;
@@ -116,7 +117,7 @@ public partial class Player : CharacterBody3D
         base._Process(delta);
         GD.Print("Health:" + _health);
         if (_health < _maxHealth)
-            _health += .01;
+            _health += _regeneration;
     }
 
     public override void _PhysicsProcess(double delta)
@@ -152,6 +153,11 @@ public partial class Player : CharacterBody3D
         {
             maxSpeed *= 2;
             acceleration *= 2;
+        }
+
+        if (!IsOnFloor())
+        {
+            acceleration /= _airbornePenalty;
         }
         
         var movementAcceleration = xzVelocity.MoveToward(

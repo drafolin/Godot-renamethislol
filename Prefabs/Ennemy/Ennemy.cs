@@ -39,6 +39,8 @@ public partial class Ennemy: CharacterBody3D
     [Export] private RayCast3D _floorDetector;
     [Export] private double _resistance = 1;
     [Export] private RayCast3D _playerRay;
+    [Export] private float _damage = .05f;
+    [Export] private CsgCylinder3D _visibleRay;
     private double _health;
     private NavigationAgent3D _navigationAgent;
     private Runnable[] _deferredActions = Array.Empty<Runnable>();
@@ -56,6 +58,7 @@ public partial class Ennemy: CharacterBody3D
         _navigationAgent ??= GetNode<NavigationAgent3D>("NavigationAgent3D");
         _floorDetector ??= GetNode<RayCast3D>("FloorDetector");
         _playerRay ??= GetNode<RayCast3D>("PlayerRay");
+        _visibleRay ??= _playerRay.GetNode<CsgCylinder3D>("Ray");
         _health = _maxHealth;
         Callable.From(ActorSetup).CallDeferred();
     }
@@ -121,10 +124,32 @@ public partial class Ennemy: CharacterBody3D
             }
         };
 
-        _playerRay.TargetPosition = Player.GlobalTransform.Origin - GlobalTransform.Origin;
+        var relativePlayerPos = Player.GlobalTransform.Origin - GlobalTransform.Origin;
+        _playerRay.TargetPosition = relativePlayerPos;
+
+        _visibleRay.Transform = _visibleRay.Transform with
+        {
+            Origin = relativePlayerPos / 2
+        };
+
+        _visibleRay.GlobalTransform = _visibleRay.GlobalTransform with
+        {
+            Basis = _visibleRay.GlobalTransform.Basis with
+            {
+                X = relativePlayerPos.Rotated(Vector3.Up, (float)(Math.Tau/4)).Normalized(),
+                Y = relativePlayerPos,
+                Z = relativePlayerPos.Rotated(Vector3.Right, (float)(Math.Tau/4)).Normalized()
+            }
+        };
+        
         if (_playerRay.IsColliding() && _playerRay.GetCollider() is CPlayer player)
         {
-            player.Damage(.1f);
+            player.Damage(_damage);
+            _visibleRay.Visible = true;
+        }
+        else
+        {
+            _visibleRay.Visible = false;
         }
     }
 
@@ -165,6 +190,7 @@ public partial class Ennemy: CharacterBody3D
         _collider.Disabled = true;
         _hpBar.Visible = false;
         _gravity = 0;
+        _playerRay.Enabled = false;
 
         _deferredActions = _deferredActions.Append(new Runnable(_explosionParticles.Lifetime, QueueFree)).ToArray();
     }

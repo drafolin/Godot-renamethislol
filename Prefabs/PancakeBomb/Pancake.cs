@@ -31,7 +31,6 @@ public partial class Pancake: RigidBody3D
         switch (@event)
         {
             case InputEventKey action when action.IsActionPressed("explode"):
-                GD.Print("boom!");
                 Explode();
                 break;
         }
@@ -40,7 +39,6 @@ public partial class Pancake: RigidBody3D
     private void Explode()
     {
         _obstacle.AvoidanceEnabled = false;
-        _obstacle.QueueFree();
         _explosionParticles.Emitting = true;
         _destroyIn = _explosionParticles.Lifetime;
         _startCountDown = true;
@@ -54,6 +52,7 @@ public partial class Pancake: RigidBody3D
                 ennemy.Damage(20);
             }
         }
+        _obstacle.QueueFree();
     }
 
     public override void _Process(double delta)
