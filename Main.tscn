@@ -370,7 +370,7 @@ shape = SubResource("BoxShape3D_v1hym")
 unique_name_in_owner = true
 script = ExtResource("2_lff03")
 _player = NodePath("../../player")
-_enemyPrefab = ExtResource("3_olkre")
+_enemyPrefabs = Array[PackedScene]([ExtResource("3_olkre")])
 _hudPrompt = NodePath("../../UI/HUD/Control/Label")
 
 [node name="Throwables" type="Node3D" parent="world"]

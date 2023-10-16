@@ -1,0 +1,59 @@
+[gd_scene load_steps=6 format=3 uid="uid://dyv4kqeogdfeb"]
+
+[ext_resource type="PackedScene" uid="uid://dh0sj0kqyk5tu" path="res://Prefabs/Explosion/Explosion.tscn" id="1_8xu7m"]
+[ext_resource type="PackedScene" uid="uid://cnnglmul2nv2n" path="res://Prefabs/Ennemy/Prefabs/hpBar/hpBar.tscn" id="2_t2iuk"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ywbev"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_d4ds2"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_12ltv"]
+viewport_path = NodePath("HealthBar")
+
+[node name="Base" type="CharacterBody3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_ywbev")
+
+[node name="CSGSphere3D2" type="CSGSphere3D" parent="CollisionShape3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.490985, 0)
+radial_segments = 25
+rings = 25
+material = SubResource("StandardMaterial3D_d4ds2")
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="CollisionShape3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000187635, -0.497261, -5.34058e-05)
+radial_segments = 25
+rings = 25
+material = SubResource("StandardMaterial3D_d4ds2")
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="CollisionShape3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.000364304, 0.00341654, 0.000242233)
+height = 1.0
+sides = 25
+material = SubResource("StandardMaterial3D_d4ds2")
+
+[node name="GPUParticles3D" parent="." instance=ExtResource("1_8xu7m")]
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+path_max_distance = 20.01
+avoidance_enabled = true
+radius = 1.0
+max_speed = 0.5
+
+[node name="HealthBar" type="SubViewport" parent="."]
+transparent_bg = true
+size = Vector2i(850, 325)
+
+[node name="Node2D" parent="HealthBar" instance=ExtResource("2_t2iuk")]
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(0.0821138, 0, 0, 0, 0.0821138, 0, 0, 0, 1, 0, 1.20564, 0)
+texture = SubResource("ViewportTexture_12ltv")
+region_enabled = true
+region_rect = Rect2(0, 0, 850, 325)
+
+[node name="FloorDetector" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+target_position = Vector3(0, -0.3, 0)

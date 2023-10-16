@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using Godot.Collections;
 using Test12.Prefabs.Ennemy;
 using Test12.Prefabs.Player;
 
@@ -8,7 +9,7 @@ namespace Test12.Scripts.Ennemies;
 public partial class Collection : Node3D
 {
 	[Export] private Player _player;
-	[Export] private PackedScene _enemyPrefab;
+	[Export] private Array<PackedScene> _enemyPrefabs;
 	[Export] private Label _hudPrompt;
 	[Export] private int _maxEnnemies = 30;
 
@@ -48,7 +49,7 @@ public partial class Collection : Node3D
 
 	private void Spawn()
 	{
-		var ennemy = _enemyPrefab.Instantiate<Ennemy>();
+		var ennemy = _enemyPrefabs[_randomGen.Next(0,_enemyPrefabs.Count)].Instantiate<Ennemy>();
 		ennemy.Player = _player;
 		float x, z;
 		var playerX = _player.GlobalTransform.Origin.X;
