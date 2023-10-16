@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using Godot;
 using Test12.Prefabs.Explosion;
@@ -27,7 +27,6 @@ internal struct Runnable
 public partial class Ennemy: CharacterBody3D
 {
     [Export] public CPlayer Player;
-    [Export] public CsgBox3D Floor;
     [Export] private Sprite3D _hpBar;
     
     // Get the gravity from the project settings to be synced with RigidBody nodes.
@@ -37,6 +36,7 @@ public partial class Ennemy: CharacterBody3D
     [Export] private Particles _explosionParticles;
     [Export] private CollisionShape3D _collider;
     [Export] private double _maxHealth = 2;
+    [Export] private RayCast3D _floorDetector;
     private double _health;
     [Export] private double _resistance = 1;
     private NavigationAgent3D _navigationAgent;
@@ -52,7 +52,8 @@ public partial class Ennemy: CharacterBody3D
     {
         _explosionParticles ??= GetNode<Particles>("GPUParticles3D");
         _explosionParticles.Player = Player;
-        _navigationAgent = GetNode<NavigationAgent3D>("NavigationAgent3D");
+        _navigationAgent ??= GetNode<NavigationAgent3D>("NavigationAgent3D");
+        _floorDetector ??= GetNode<RayCast3D>("FloorDetector");
         _health = _maxHealth;
         Callable.From(ActorSetup).CallDeferred();
     }
@@ -71,6 +72,11 @@ public partial class Ennemy: CharacterBody3D
             return;
         }
 
+        var floor = _floorDetector.GetCollider();
+        double floorFriction = 10;
+        if (floor is not null) 
+            floorFriction = floor.GetMeta("frictionFactor", 10).AsDouble();
+        
         var currentAgentPosition = GlobalTransform.Origin;
         var nextPathPosition = _navigationAgent.GetNextPathPosition();
         const float airBornePenalty = 1000f;

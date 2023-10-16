@@ -49,7 +49,6 @@ public partial class Collection : Node3D
 	{
 		var ennemy = _enemyPrefab.Instantiate<Ennemy>();
 		ennemy.Player = _player;
-		ennemy.Floor = GetNode<CsgBox3D>("%floor");
 		float x, z;
 		var playerX = _player.GlobalTransform.Origin.X;
 		var playerZ = _player.GlobalTransform.Origin.Z;
@@ -60,7 +59,7 @@ public partial class Collection : Node3D
 		} while (playerX + 10 > x && x > playerX - 10 && playerZ + 10 > z && z > playerZ - 10);
 		ennemy.Transform = ennemy.Transform with
 		{
-			Origin = new Vector3(playerX, 20f, playerZ)
+			Origin = new Vector3(x, 2f, z)
 		};
 		AddChild(ennemy);
 	}
