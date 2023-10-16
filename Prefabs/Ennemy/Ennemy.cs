@@ -5,7 +5,7 @@ using Test12.Prefabs.Explosion;
 using CPlayer = Test12.Prefabs.Player.Player;
 
 namespace Test12.Prefabs.Ennemy;
-public abstract partial class Ennemy: CharacterBody3D
+public partial class Ennemy: CharacterBody3D
 {
     protected struct Runnable
     {
@@ -54,6 +54,8 @@ public abstract partial class Ennemy: CharacterBody3D
         ExplosionParticles.Player = Player;
         NavigationAgent ??= GetNode<NavigationAgent3D>("NavigationAgent3D");
         FloorDetector ??= GetNode<RayCast3D>("FloorDetector");
+        HpBar ??= GetNode<Sprite3D>("Sprite3D");
+        Collider ??= GetNode<CollisionShape3D>("CollisionShape3D");
         Health = MaxHealth;
         Callable.From(ActorSetup).CallDeferred();
     }

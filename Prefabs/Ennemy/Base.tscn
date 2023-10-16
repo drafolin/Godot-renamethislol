@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://dyv4kqeogdfeb"]
+[gd_scene load_steps=7 format=3 uid="uid://dyv4kqeogdfeb"]
 
 [ext_resource type="PackedScene" uid="uid://dh0sj0kqyk5tu" path="res://Prefabs/Explosion/Explosion.tscn" id="1_8xu7m"]
+[ext_resource type="Script" path="res://Prefabs/Ennemy/Ennemy.cs" id="1_jhot8"]
 [ext_resource type="PackedScene" uid="uid://cnnglmul2nv2n" path="res://Prefabs/Ennemy/Prefabs/hpBar/hpBar.tscn" id="2_t2iuk"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ywbev"]
@@ -11,7 +12,12 @@ albedo_color = Color(1, 0, 0, 1)
 [sub_resource type="ViewportTexture" id="ViewportTexture_12ltv"]
 viewport_path = NodePath("HealthBar")
 
-[node name="Base" type="CharacterBody3D"]
+[node name="Base" type="CharacterBody3D" node_paths=PackedStringArray("HpBar", "ExplosionParticles", "Collider", "FloorDetector")]
+script = ExtResource("1_jhot8")
+HpBar = NodePath("Sprite3D")
+ExplosionParticles = NodePath("GPUParticles3D")
+Collider = NodePath("CollisionShape3D")
+FloorDetector = NodePath("FloorDetector")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_ywbev")
