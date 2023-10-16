@@ -37,8 +37,9 @@ public partial class Ennemy: CharacterBody3D
     [Export] private CollisionShape3D _collider;
     [Export] private double _maxHealth = 2;
     [Export] private RayCast3D _floorDetector;
-    private double _health;
     [Export] private double _resistance = 1;
+    [Export] private RayCast3D _playerRay;
+    private double _health;
     private NavigationAgent3D _navigationAgent;
     private Runnable[] _deferredActions = Array.Empty<Runnable>();
 
@@ -54,6 +55,7 @@ public partial class Ennemy: CharacterBody3D
         _explosionParticles.Player = Player;
         _navigationAgent ??= GetNode<NavigationAgent3D>("NavigationAgent3D");
         _floorDetector ??= GetNode<RayCast3D>("FloorDetector");
+        _playerRay ??= GetNode<RayCast3D>("PlayerRay");
         _health = _maxHealth;
         Callable.From(ActorSetup).CallDeferred();
     }
@@ -96,17 +98,6 @@ public partial class Ennemy: CharacterBody3D
 
     public override void _Process(double delta)
     {
-        base._Process(delta);
-
-        GetSlideCollisionCount();
-        for (var i = 0; i < GetSlideCollisionCount(); i++)
-        {
-            if (GetSlideCollision(i).GetCollider() is not CPlayer) continue;
-            GD.Print("player");
-            GetTree().Quit();
-            return;
-        }
-
         for (var i = 0; i < _deferredActions.Length; i++)
         {
             _deferredActions[i].Decrement(delta);
@@ -129,6 +120,12 @@ public partial class Ennemy: CharacterBody3D
                 Z = toPlayerV.Normalized() * 0.082f
             }
         };
+
+        _playerRay.TargetPosition = Player.GlobalTransform.Origin - GlobalTransform.Origin;
+        if (_playerRay.IsColliding() && _playerRay.GetCollider() is CPlayer player)
+        {
+            player.Damage(.1f);
+        }
     }
 
     private async void ActorSetup()

@@ -23,13 +23,14 @@ public partial class Player : CharacterBody3D
     [Export] private Node3D _overlay;
     [Export] private float _meleeDamage = 1;
     [Export] private ShapeCast3D _meleeHitBox;
+    [Export] private double _maxHealth = 50;
+    private double _health;
     private RayCast3D _floorDetector;
     private Animation _overlayAnimation;
 
     private float _rotationX;
     private float _rotationY;
-
-
+    
     private GpuParticles3D _bullet;
 
     public override void _Ready()
@@ -39,6 +40,7 @@ public partial class Player : CharacterBody3D
         _bullet = GetNode<GpuParticles3D>("Pivot/GPUParticles3D");
         _overlayAnimation = _overlay.GetNode<Animation>("Overlay");
         _meleeHitBox ??= GetNode<ShapeCast3D>("MeleeHitBox");
+        _health = _maxHealth;
     }
 
     public override void _Input(InputEvent @event)
@@ -109,6 +111,13 @@ public partial class Player : CharacterBody3D
         }
     }
 
+    public override void _Process(double delta)
+    {
+        base._Process(delta);
+        GD.Print("Health:" + _health);
+        if (_health < _maxHealth)
+            _health += .01;
+    }
 
     public override void _PhysicsProcess(double delta)
     {
@@ -185,23 +194,23 @@ public partial class Player : CharacterBody3D
     {
         if (_overlayAnimation.IsPlaying()) return;
         Ennemy.Ennemy firstEnemy = null;
-        
+
         for (var i = 0; i < _meleeHitBox.GetCollisionCount(); i++)
         {
             var collided = _meleeHitBox.GetCollider(i);
             if (collided is not Ennemy.Ennemy enemy) continue;
             firstEnemy ??= enemy;
             enemy.Damage(_meleeDamage);
-            var toEnemyV = enemy.GlobalTransform.Origin - GlobalTransform.Origin; 
+            var toEnemyV = enemy.GlobalTransform.Origin - GlobalTransform.Origin;
             enemy.Push(toEnemyV * 2f + Vector3.Up * 2f);
         }
-        
-        
+
+
         if (firstEnemy is not null)
         {
             _overlayAnimation.Play("melee_hit");
-            var toFirstEnemyVector = GlobalTransform.Origin - firstEnemy.GlobalTransform.Origin; 
-            
+            var toFirstEnemyVector = GlobalTransform.Origin - firstEnemy.GlobalTransform.Origin;
+
             GlobalTransform = GlobalTransform with
             {
                 Basis = GlobalTransform.Basis with
@@ -214,6 +223,15 @@ public partial class Player : CharacterBody3D
         else
         {
             _overlayAnimation.Play("melee");
+        }
+    }
+
+    public void Damage(float dmg)
+    {
+        _health -= dmg;
+        if (_health < 0)
+        {
+            GetTree().Quit();
         }
     }
 }

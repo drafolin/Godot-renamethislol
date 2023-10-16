@@ -64,4 +64,6 @@ region_rect = Rect2(0, 0, 850, 325)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
 target_position = Vector3(0, -0.3, 0)
 
+[node name="PlayerRay" type="RayCast3D" parent="."]
+
 [connection signal="velocity_computed" from="NavigationAgent3D" to="." method="_OnNavigationAgent3dVelocityComputed"]
